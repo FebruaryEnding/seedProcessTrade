@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <meta charset="utf-8">
+</head>
+
+<body>
+
+<button  onclick="syncFarm()" type="button">同步农场</button>
+<button  onclick="syncFarmLand()" type="button">同步现有农场地块</button>
+<button onclick="syncArea()" type="button">统计各乡镇作物面积占比</button>
+<button  onclick="syncExceptionn()" type="button">同步异常</button>
+</body>
+
+<script type="text/javascript">
+    var url = 'http://127.0.0.1:8888/seedTrade';
+//    var url = 'http://47.108.48.9:8888/seedTrade';
+	function syncFarm(){
+		console.log("同步农场");
+		$.get(url+"/api/sync/farm",function(data,status){
+		alert("Data: " + data.uiMsg + "\nStatus: " + status);
+		});
+	}
+	
+</script>
+
+</html>
