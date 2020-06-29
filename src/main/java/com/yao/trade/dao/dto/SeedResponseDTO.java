@@ -46,6 +46,35 @@ public class SeedResponseDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdTime;
 
+    /**
+     * 密语
+     */
+    private String whisper;
+
+    private String result;
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public void generateWhisperAndResult() {
+        this.whisper = "@" + roleName + " " + (sellOrBuy.equals("wts") ? "buy" : "sell") + " <" + name + "> " + price;
+        this.result = roleName + " " + sellOrBuy + " " + name + " " + price + "--" + createdTime;
+    }
+
+    public String getWhisper() {
+        return whisper;
+    }
+
+    public void setWhisper(String whisper) {
+        this.whisper = whisper;
+    }
+
+
     public String getId() {
         return id;
     }

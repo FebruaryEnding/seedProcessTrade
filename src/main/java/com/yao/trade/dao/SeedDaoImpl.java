@@ -8,7 +8,6 @@ import com.yao.trade.dao.dto.SeedResponseDTO;
 import com.yao.trade.domain.SeedEntity;
 import com.yao.trade.service.ISeedService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -48,7 +47,10 @@ public class SeedDaoImpl implements ISeedDao {
         }, PageRequest.of(pageQuery.getPage(), pageQuery.getPageSize(), Sort.by(new Sort.Order(Sort.Direction.DESC, "createdTime"))));
 
         List<SeedEntity> content = seedEntities.getRows();
-        List list = BeanCopyUtils.copyList(content, SeedResponseDTO.class);
+        List<SeedResponseDTO> list = BeanCopyUtils.copyList(content, SeedResponseDTO.class);
+        for (SeedResponseDTO seedResponseDTO : list) {
+            seedResponseDTO.generateWhisperAndResult();
+        }
         seedEntities.setRows(list);
         return seedEntities;
     }

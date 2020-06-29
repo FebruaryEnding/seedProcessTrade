@@ -4,10 +4,13 @@ import com.yao.trade.dao.ISeedDao;
 import com.yao.trade.dao.dto.PageQuery;
 import com.yao.trade.dao.dto.PageResult;
 import com.yao.trade.dao.dto.SeedRequestDTO;
+import com.yao.trade.dao.dto.SeedResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Api("种子")
