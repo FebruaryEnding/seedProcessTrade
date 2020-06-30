@@ -1,8 +1,8 @@
 package com.yao.trade.dao;
 
 import com.yao.trade.common.BeanCopyUtils;
-import com.yao.trade.dao.dto.PageQuery;
 import com.yao.trade.dao.dto.PageResult;
+import com.yao.trade.dao.dto.SeedQuery;
 import com.yao.trade.dao.dto.SeedRequestDTO;
 import com.yao.trade.dao.dto.SeedResponseDTO;
 import com.yao.trade.domain.SeedEntity;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -36,12 +37,16 @@ public class SeedDaoImpl implements ISeedDao {
     }
 
     @Override
-    public PageResult query(PageQuery pageQuery) {
+    public PageResult query(SeedQuery pageQuery) {
         PageResult seedEntities = seedService.query(new Specification<SeedEntity>() {
             @Nullable
             @Override
             public Predicate toPredicate(Root<SeedEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
+                String keyValue = pageQuery.getKeyValue();
+                if (!StringUtils.isEmpty(keyValue)) {
+                    predicates.add(criteriaBuilder.like(root.get("name"), "%" + keyValue + "%"));
+                }
                 return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
             }
         }, PageRequest.of(pageQuery.getPage(), pageQuery.getPageSize(), Sort.by(new Sort.Order(Sort.Direction.DESC, "createdTime"))));

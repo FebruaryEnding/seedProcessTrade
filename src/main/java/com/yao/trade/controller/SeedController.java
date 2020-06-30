@@ -1,10 +1,7 @@
 package com.yao.trade.controller;
 
 import com.yao.trade.dao.ISeedDao;
-import com.yao.trade.dao.dto.PageQuery;
-import com.yao.trade.dao.dto.PageResult;
-import com.yao.trade.dao.dto.SeedRequestDTO;
-import com.yao.trade.dao.dto.SeedResponseDTO;
+import com.yao.trade.dao.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,7 @@ public class SeedController {
 
     @ApiOperation("查询种子")
     @GetMapping
-    public PageResult query(PageQuery query) {
+    public PageResult query(SeedQuery query) {
         PageResult result = seedDao.query(query);
         return result;
     }
