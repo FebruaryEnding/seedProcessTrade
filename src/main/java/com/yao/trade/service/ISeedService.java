@@ -6,8 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 public interface ISeedService {
-    void save(SeedEntity seedEntity);
+
 
     PageResult query(Specification<SeedEntity> specification, PageRequest createdTime);
+
+    void save(List<SeedEntity> list);
 }

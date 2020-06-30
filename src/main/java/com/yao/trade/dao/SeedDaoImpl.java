@@ -30,10 +30,12 @@ public class SeedDaoImpl implements ISeedDao {
     private ISeedService seedService;
 
     @Override
-    public void save(SeedRequestDTO seedRequestDTO) {
-        SeedEntity seedEntity = BeanCopyUtils.copy(seedRequestDTO, SeedEntity.class);
-        seedEntity.setCreatedTime(new Date());
-        seedService.save(seedEntity);
+    public void save(List<SeedRequestDTO> seedRequestDTO) {
+        List<SeedEntity> list = BeanCopyUtils.copyList(seedRequestDTO, SeedEntity.class);
+        for (SeedEntity seedEntity : list) {
+            seedEntity.setCreatedTime(new Date());
+        }
+        seedService.save(list);
     }
 
     @Override

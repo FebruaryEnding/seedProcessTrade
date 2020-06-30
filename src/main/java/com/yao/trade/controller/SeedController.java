@@ -1,7 +1,9 @@
 package com.yao.trade.controller;
 
 import com.yao.trade.dao.ISeedDao;
-import com.yao.trade.dao.dto.*;
+import com.yao.trade.dao.dto.PageResult;
+import com.yao.trade.dao.dto.SeedQuery;
+import com.yao.trade.dao.dto.SeedRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class SeedController {
 
     @ApiOperation("添加种子")
     @PostMapping
-    public String addSeed(@RequestBody SeedRequestDTO seedRequestDTO) {
+    public String addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO) {
         seedDao.save(seedRequestDTO);
         return "添加成功";
     }
