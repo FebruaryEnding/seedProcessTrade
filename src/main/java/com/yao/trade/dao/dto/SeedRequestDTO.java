@@ -18,6 +18,8 @@ public class SeedRequestDTO {
      */
     private BigDecimal price;
 
+    private Integer level;
+
     /**
      * 单位
      */
@@ -62,6 +64,14 @@ public class SeedRequestDTO {
      */
     @ApiModelProperty("服务器 （国际服/国服）二选一")
     private String  serverName;
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
     public String getServerName() {
         return serverName;

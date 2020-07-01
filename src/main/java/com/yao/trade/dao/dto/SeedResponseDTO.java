@@ -64,6 +64,20 @@ public class SeedResponseDTO {
      */
     private String  serverName;
 
+    /**
+     * 等级
+     */
+    private Integer level;
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+
     public String getServerName() {
         return serverName;
     }

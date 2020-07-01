@@ -76,6 +76,19 @@ public class SeedEntity {
      */
     private String  serverName;
 
+    /**
+     * 等级
+     */
+    private Integer level;
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     public String getIp() {
         return ip;
     }
