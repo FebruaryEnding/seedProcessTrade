@@ -2,13 +2,13 @@ package com.yao.trade.dao.dto;
 
 public class AffixResponseDTO {
 
-    private String affix;
+    private String value;
 
-    public String getAffix() {
-        return affix;
+    public String getValue() {
+        return value;
     }
 
-    public void setAffix(String affix) {
-        this.affix = affix;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

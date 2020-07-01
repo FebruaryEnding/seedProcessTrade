@@ -53,7 +53,8 @@ public class SeedController {
 
     @ApiOperation("查询种子")
     @GetMapping("/affix")
-    public List<AffixResponseDTO> findAll(AffixQuery query){
+    public List<AffixResponseDTO> findAll(){
+         AffixQuery query =new  AffixQuery();
         return  affixDao.findAll(query);
     }
 }

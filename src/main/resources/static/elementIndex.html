@@ -9,7 +9,9 @@
         .el-table .warning-row {
             background: oldlace;
         }
-
+        .el-autocomplete{
+            width: 100%;
+        }
         .el-table .success-row {
             background: #f0f9eb;
         }
@@ -17,6 +19,7 @@
 </head>
 <body>
 <div id="app">
+    反馈群QQ号697777608
     <el-input v-model="input" placeholder="请输入内容"></el-input>
     <!--    <el-button @click="visible = true">搜索</el-button>-->
     <el-button @click="searchData">搜索</el-button>
@@ -27,7 +30,13 @@
         <el-form :model="form">
 
             <el-form-item label="种子" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off"></el-input>
+<!--                <el-input :disabled = true v-model="form.name" autocomplete="off"></el-input>-->
+                <el-autocomplete
+                        v-model="state"
+                        :fetch-suggestions="querySearchAsync"
+                        placeholder="种子"
+                        @select="handleSelect"
+                ></el-autocomplete>
             </el-form-item>
 
             <el-form-item label="等级" :label-width="formLabelWidth">
@@ -112,7 +121,7 @@
             </el-table-column>
             <el-table-column
                     prop="whisper"
-                    label="谜语"
+                    label="密语"
                     width="200">
             </el-table-column>
 
@@ -134,7 +143,8 @@
                 tableData: [],
                 visible: false,
                 input: '',
-                url: 'http://127.0.0.1:8888/seedTrade',
+                url: 'http://118.25.88.251:8888/seedTrade',
+                // url: 'http://127.0.0.1:8888/seedTrade',
                 dialogFormVisible: false,
                 form: {
                     name: "",
@@ -146,7 +156,14 @@
                     unit: "c"
                 },
                 formLabelWidth: '120px',
+                restaurants: [],
+                state: '',
+                timeout: null
             }
+        },
+        mounted: function () {
+            this.searchData();
+            this.loadAll();
         },
         methods: {
             tableRowClassName({row, rowIndex}) {
@@ -162,27 +179,57 @@
                 let that = this;
                 $.get(this.url + "/seed?page=" + 1 + "&pageSize=" + 500 + "&keyValue=" + this.input, function (data, status) {
                     console.log(data);
-                    that.tableData = data.rows
+                    that.tableData = data.rows;
                 });
             },
 
             add() {
                 console.log(this.form);
                 let reuqest = this.form;
+                reuqest.name = this.state;
                 let url = this.url;
                 console.log(reuqest);
-                dialogFormVisible = false;
+                let that = this;
+
                 $.ajax({
                         contentType: 'application/json',
                         url: url + "/seed/one",
                         type: 'POST',
                         data: JSON.stringify(reuqest),
                         success: function (result) {
-                            alert(result);
-                            window.location.reload;
+                            that.$message(result);
+                            that.dialogFormVisible = false;
+                            that.searchData();
                         },
                     }
                 );
+            },
+
+            querySearchAsync(queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+                console.log("结果"+results);
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 3000 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                    console.log(state.value.toLowerCase().indexOf(queryString.toLowerCase()));
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) >=0 ?true:false );
+                };
+            },
+
+            loadAll() {
+                let that = this;
+                $.get(this.url + "/seed/affix", function (data, status) {
+                    console.log(data);
+                    that.restaurants = data;
+                });
+            },
+            handleSelect(item) {
+                console.log(item);
             }
         }
     })

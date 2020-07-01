@@ -43,7 +43,7 @@ public class SeedAffixDaoImpl implements ISeedAffixDao {
 
         for (SeedAffixEntity entity : entities) {
             AffixResponseDTO responseDTO = new AffixResponseDTO();
-            responseDTO.setAffix(entity.getChinese() + "(" + entity.getEnglish() + ")");
+            responseDTO.setValue(entity.getChinese() + "(" + entity.getEnglish() + ")");
             responseDTOS.add(responseDTO);
         }
         return responseDTOS;
