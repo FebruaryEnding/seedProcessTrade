@@ -31,6 +31,11 @@ public class SeedServiceImpl implements ISeedService {
     }
 
     @Override
+    public void save(SeedEntity seedEntity) {
+        seedRepository.save(seedEntity);
+    }
+
+    @Override
     public List<SeedEntity> findByIp(String realIpAddress) {
         return seedRepository.findByIp(realIpAddress);
     }

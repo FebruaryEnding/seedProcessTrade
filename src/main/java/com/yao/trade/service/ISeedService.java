@@ -14,6 +14,7 @@ public interface ISeedService {
     PageResult query(Specification<SeedEntity> specification, PageRequest createdTime);
 
     void save(List<SeedEntity> list);
+    void save(SeedEntity seedEntity);
 
     List<SeedEntity> findByIp(String realIpAddress);
 }

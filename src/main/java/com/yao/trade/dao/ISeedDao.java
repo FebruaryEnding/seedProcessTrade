@@ -13,4 +13,5 @@ public interface ISeedDao {
     PageResult query(SeedQuery query);
 
 
+    void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest);
 }

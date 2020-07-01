@@ -39,7 +39,7 @@ public class SeedDaoImpl implements ISeedDao {
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
         if(!CollectionUtils.isEmpty(seedEntities)){
-            throw new RuntimeException("请等5分钟后再次添加");
+            throw new RuntimeException("请等1分钟后再次添加");
         }
         for (SeedEntity seedEntity : list) {
             seedEntity.setIp(realIpAddress);
@@ -47,6 +47,20 @@ public class SeedDaoImpl implements ISeedDao {
         }
         seedService.save(list);
     }
+
+    @Override
+    public void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
+        SeedEntity seedEntity = BeanCopyUtils.copy(seedRequestDTO, SeedEntity.class);
+        String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
+        List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
+        if(!CollectionUtils.isEmpty(seedEntities)){
+            throw new RuntimeException("请等1分钟后再次添加");
+        }
+        seedEntity.setIp(realIpAddress);
+        seedEntity.setCreatedTime(new Date());
+        seedService.save(seedEntity);
+    }
+
 
     @Override
     public PageResult query(SeedQuery pageQuery) {
@@ -57,7 +71,9 @@ public class SeedDaoImpl implements ISeedDao {
                 List<Predicate> predicates = new ArrayList<>();
                 String keyValue = pageQuery.getKeyValue();
                 if (!StringUtils.isEmpty(keyValue)) {
-                    predicates.add(criteriaBuilder.like(root.get("name"), "%" + keyValue + "%"));
+                    Predicate name = criteriaBuilder.like(root.get("name"), "%" + keyValue + "%");
+                    Predicate roleName = criteriaBuilder.like(root.get("roleName"), "%" + keyValue + "%");
+                    predicates.add(criteriaBuilder.or(name,roleName));
                 }
                 String serverName = pageQuery.getServerName();
                 if (!StringUtils.isEmpty(serverName)) {
@@ -75,6 +91,7 @@ public class SeedDaoImpl implements ISeedDao {
         seedEntities.setRows(list);
         return seedEntities;
     }
+
 
 
 }

@@ -26,8 +26,18 @@ public class SeedController {
     @PostMapping
     public String addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO, HttpServletRequest servletRequest) {
         try {
-
             seedDao.save(seedRequestDTO,servletRequest);
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
+        return "添加成功";
+    }
+
+    @ApiOperation("添加种子")
+    @PostMapping("/one")
+    public String addOneSeed(@RequestBody SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
+        try {
+            seedDao.saveOne(seedRequestDTO,servletRequest);
         }catch (RuntimeException e){
             return e.getMessage();
         }
