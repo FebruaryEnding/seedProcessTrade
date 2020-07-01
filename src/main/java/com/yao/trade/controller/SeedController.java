@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -23,8 +24,13 @@ public class SeedController {
 
     @ApiOperation("添加种子")
     @PostMapping
-    public String addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO) {
-        seedDao.save(seedRequestDTO);
+    public String addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO, HttpServletRequest servletRequest) {
+        try {
+
+            seedDao.save(seedRequestDTO,servletRequest);
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
         return "添加成功";
     }
 

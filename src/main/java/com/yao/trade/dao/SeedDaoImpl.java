@@ -1,6 +1,7 @@
 package com.yao.trade.dao;
 
 import com.yao.trade.common.BeanCopyUtils;
+import com.yao.trade.common.IpUtils;
 import com.yao.trade.dao.dto.PageResult;
 import com.yao.trade.dao.dto.SeedQuery;
 import com.yao.trade.dao.dto.SeedRequestDTO;
@@ -13,15 +14,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SeedDaoImpl implements ISeedDao {
@@ -30,9 +34,15 @@ public class SeedDaoImpl implements ISeedDao {
     private ISeedService seedService;
 
     @Override
-    public void save(List<SeedRequestDTO> seedRequestDTO) {
+    public void save(List<SeedRequestDTO> seedRequestDTO, HttpServletRequest servletRequest) {
         List<SeedEntity> list = BeanCopyUtils.copyList(seedRequestDTO, SeedEntity.class);
+        String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
+        List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
+        if(!CollectionUtils.isEmpty(seedEntities)){
+            throw new RuntimeException("请等5分钟后再次添加");
+        }
         for (SeedEntity seedEntity : list) {
+            seedEntity.setIp(realIpAddress);
             seedEntity.setCreatedTime(new Date());
         }
         seedService.save(list);

@@ -23,6 +23,8 @@ public class SeedEntity {
     )
     private String id;
 
+    private String ip;
+
     /**
      * 种子名字
      */
@@ -73,6 +75,14 @@ public class SeedEntity {
      * 是不是腾讯服
      */
     private String  serverName;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
     public String getServerName() {
         return serverName;
