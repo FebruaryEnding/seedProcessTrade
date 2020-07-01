@@ -1,5 +1,8 @@
 package com.yao.trade.dao.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,34 +16,68 @@ public class SeedRequestDTO {
     /**
      * 价格
      */
-    private String price;
+    private BigDecimal price;
+
+    /**
+     * 单位
+     */
+    @ApiModelProperty("单位 e 或者 c 选择框")
+    private String unit;
 
     /**
      * 数量
      */
+    @ApiModelProperty("数量")
     private BigDecimal number;
 
     /**
      * 角色名
      */
+    @ApiModelProperty("角色名")
     private String roleName;
 
     /**
      * 买还是卖
      * wts  wtb
      */
+    @ApiModelProperty("买还是卖")
     private String sellOrBuy;
 
     /**
      * 备注
      */
+    @ApiModelProperty("备注")
     private String remark;
 
 
     /**
      * 操作码
      */
+    @ApiModelProperty("操作码")
     private String operateNumber;
+
+
+    /**
+     * 是不是腾讯服
+     */
+    @ApiModelProperty("服务器 （国际服/国服）二选一")
+    private String  serverName;
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public String getName() {
         return name;
@@ -50,11 +87,11 @@ public class SeedRequestDTO {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

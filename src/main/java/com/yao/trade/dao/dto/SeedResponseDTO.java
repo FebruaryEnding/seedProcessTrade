@@ -17,7 +17,12 @@ public class SeedResponseDTO {
     /**
      * 价格
      */
-    private String price;
+    private BigDecimal price;
+
+    /**
+     * 单位
+     */
+    private String unit;
 
     /**
      * 数量
@@ -53,6 +58,20 @@ public class SeedResponseDTO {
 
     private String result;
 
+
+    /**
+     * 是不是腾讯服
+     */
+    private String  serverName;
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
     public String getResult() {
         return result;
     }
@@ -64,6 +83,14 @@ public class SeedResponseDTO {
     public void generateWhisperAndResult() {
         this.whisper = "@" + roleName + " " + (sellOrBuy.equals("wts") ? "buy" : "sell") + " <" + name + "> " + price;
         this.result = roleName + " " + sellOrBuy + " " + name + " " + price + "--" + createdTime;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getWhisper() {
@@ -91,11 +118,11 @@ public class SeedResponseDTO {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

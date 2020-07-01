@@ -49,6 +49,10 @@ public class SeedDaoImpl implements ISeedDao {
                 if (!StringUtils.isEmpty(keyValue)) {
                     predicates.add(criteriaBuilder.like(root.get("name"), "%" + keyValue + "%"));
                 }
+                String serverName = pageQuery.getServerName();
+                if (!StringUtils.isEmpty(serverName)) {
+                    predicates.add(criteriaBuilder.equal(root.get("serverName"), serverName));
+                }
                 return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
             }
         }, PageRequest.of(pageQuery.getPage(), pageQuery.getPageSize(), Sort.by(new Sort.Order(Sort.Direction.DESC, "createdTime"))));

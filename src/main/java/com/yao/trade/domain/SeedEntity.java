@@ -31,7 +31,12 @@ public class SeedEntity {
     /**
      * 价格
      */
-    private String price;
+    private BigDecimal price;
+
+    /**
+     * 单位
+     */
+    private String unit;
 
     /**
      * 数量
@@ -63,6 +68,31 @@ public class SeedEntity {
      * 操作码
      */
     private String operateNumber;
+
+    /**
+     * 是不是腾讯服
+     */
+    private String  serverName;
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public Date getCreatedTime() {
         return createdTime;
@@ -96,12 +126,8 @@ public class SeedEntity {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public BigDecimal getNumber() {

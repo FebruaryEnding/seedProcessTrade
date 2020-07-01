@@ -1,9 +1,8 @@
 package com.yao.trade.controller;
 
+import com.yao.trade.dao.ISeedAffixDao;
 import com.yao.trade.dao.ISeedDao;
-import com.yao.trade.dao.dto.PageResult;
-import com.yao.trade.dao.dto.SeedQuery;
-import com.yao.trade.dao.dto.SeedRequestDTO;
+import com.yao.trade.dao.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,9 @@ public class SeedController {
     @Autowired
     private ISeedDao seedDao;
 
+    @Autowired
+    private ISeedAffixDao affixDao;
+
     @ApiOperation("添加种子")
     @PostMapping
     public String addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO) {
@@ -31,5 +33,11 @@ public class SeedController {
     public PageResult query(SeedQuery query) {
         PageResult result = seedDao.query(query);
         return result;
+    }
+
+    @ApiOperation("查询种子")
+    @GetMapping("/affix")
+    public List<AffixResponseDTO> findAll(AffixQuery query){
+        return  affixDao.findAll(query);
     }
 }
