@@ -9,9 +9,11 @@
         .el-table .warning-row {
             background: oldlace;
         }
-        .el-autocomplete{
+
+        .el-autocomplete {
             width: 100%;
         }
+
         .el-table .success-row {
             background: #f0f9eb;
         }
@@ -38,7 +40,6 @@
     </el-select>
 
 
-
     <el-input v-model="input" placeholder="请输入内容"></el-input>
     <!--    <el-button @click="visible = true">搜索</el-button>-->
     <el-button @click="searchData">搜索</el-button>
@@ -49,7 +50,7 @@
         <el-form :model="form">
 
             <el-form-item label="种子" :label-width="formLabelWidth">
-<!--                <el-input :disabled = true v-model="form.name" autocomplete="off"></el-input>-->
+                <!--                <el-input :disabled = true v-model="form.name" autocomplete="off"></el-input>-->
                 <el-autocomplete
                         v-model="state"
                         :fetch-suggestions="querySearchAsync"
@@ -97,7 +98,6 @@
             <el-button type="primary" @click="add">确 定</el-button>
         </div>
     </el-dialog>
-
     <template>
         <el-table
                 :data="tableData"
@@ -169,7 +169,7 @@
                 visible: false,
                 input: '',
 //                url: 'http://118.25.88.251:8888/seedTrade',
-                 url: 'http://127.0.0.1:8888/seedTrade',
+                url: 'http://127.0.0.1:8888/seedTrade',
                 dialogFormVisible: false,
                 form: {
                     name: "",
@@ -202,7 +202,7 @@
                         label: '卖'
                     }
                 ],
-                sellOrBuy:"卖"
+                sellOrBuy: "卖"
             }
         },
         mounted: function () {
@@ -212,7 +212,7 @@
         },
         methods: {
             tableRowClassName({row, rowIndex}) {
-                if (rowIndex%2 === 0) {
+                if (rowIndex % 2 === 0) {
                     return 'warning-row';
                 } else {
                     return 'success-row';
@@ -221,7 +221,7 @@
             },
             searchData() {
                 let that = this;
-                $.get(this.url + "/seed?page=" + 1 + "&sellOrBuy="+this.sellOrBuy+"&serverName="+this.form.serverName+"&pageSize=" + 500 + "&keyValue=" + this.input, function (data, status) {
+                $.get(this.url + "/seed?page=" + 1 + "&sellOrBuy=" + this.sellOrBuy + "&serverName=" + this.form.serverName + "&pageSize=" + 500 + "&keyValue=" + this.input, function (data, status) {
                     console.log(data);
                     that.tableData = data.rows;
                 });
@@ -251,7 +251,7 @@
             querySearchAsync(queryString, cb) {
                 var restaurants = this.restaurants;
                 var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
-                console.log("结果"+results);
+                console.log("结果" + results);
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
                     cb(results);
@@ -260,7 +260,7 @@
             createStateFilter(queryString) {
                 return (state) => {
                     console.log(state.value.toLowerCase().indexOf(queryString.toLowerCase()));
-                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) >=0 ?true:false );
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 ? true : false );
                 };
             },
 
@@ -274,20 +274,20 @@
             handleSelect(item) {
                 console.log(item);
             },
-            getAnno(){
+            getAnno() {
                 let that = this;
                 $.get(this.url + "/seed/anno", function (data, status) {
                     console.log(data);
                     that.anno = data;
                 });
             },
-            handleClick(row){
+            handleClick(row) {
                 let id = row.id;
                 let that = this;
                 $.ajax({
-                    url: this.url+"/seed/"+id,
+                    url: this.url + "/seed/" + id,
                     type: 'DELETE',
-                    success:function (result) {
+                    success: function (result) {
                         that.$message(result);
                         that.searchData();
                     }
