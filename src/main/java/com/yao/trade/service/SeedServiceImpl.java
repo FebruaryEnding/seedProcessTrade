@@ -39,4 +39,14 @@ public class SeedServiceImpl implements ISeedService {
     public List<SeedEntity> findByIp(String realIpAddress) {
         return seedRepository.findByIp(realIpAddress);
     }
+
+    @Override
+    public void deleteByIpAndId(String realIpAddress, String id) {
+         seedRepository.deleteByIpAndId(realIpAddress,id);
+    }
+
+    @Override
+    public SeedEntity findByIpAndId(String realIpAddress, String id) {
+        return seedRepository.findByIpAndId(realIpAddress,id);
+    }
 }

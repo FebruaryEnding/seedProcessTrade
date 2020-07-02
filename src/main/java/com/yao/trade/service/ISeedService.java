@@ -17,4 +17,8 @@ public interface ISeedService {
     void save(SeedEntity seedEntity);
 
     List<SeedEntity> findByIp(String realIpAddress);
+
+    void deleteByIpAndId(String realIpAddress, String id);
+
+    SeedEntity findByIpAndId(String realIpAddress, String id);
 }

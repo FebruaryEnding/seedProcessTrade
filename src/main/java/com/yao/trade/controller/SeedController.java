@@ -3,6 +3,7 @@ package com.yao.trade.controller;
 import com.yao.trade.dao.ISeedAffixDao;
 import com.yao.trade.dao.ISeedDao;
 import com.yao.trade.dao.dto.*;
+import com.yao.trade.service.IAnnoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class SeedController {
 
     @Autowired
     private ISeedAffixDao affixDao;
+
+    @Autowired
+    private IAnnoService annoService;
 
     @ApiOperation("添加种子")
     @PostMapping
@@ -51,10 +55,24 @@ public class SeedController {
         return result;
     }
 
-    @ApiOperation("查询种子")
+    @ApiOperation("查询种子词缀")
     @GetMapping("/affix")
     public List<AffixResponseDTO> findAll(){
          AffixQuery query =new  AffixQuery();
         return  affixDao.findAll(query);
+    }
+
+
+    @ApiOperation("查询公告")
+    @GetMapping("/anno")
+    public String getAnno(){
+        return annoService.getAnno();
+    }
+
+    @ApiOperation("删除")
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id")String id,HttpServletRequest servletRequest){
+        String result= seedDao.delete(id,servletRequest);
+        return result;
     }
 }

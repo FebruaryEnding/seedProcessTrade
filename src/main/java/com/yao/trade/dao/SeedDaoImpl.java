@@ -22,10 +22,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SeedDaoImpl implements ISeedDao {
@@ -38,7 +38,7 @@ public class SeedDaoImpl implements ISeedDao {
         List<SeedEntity> list = BeanCopyUtils.copyList(seedRequestDTO, SeedEntity.class);
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
-        if(!CollectionUtils.isEmpty(seedEntities)){
+        if (!CollectionUtils.isEmpty(seedEntities)) {
             throw new RuntimeException("请等1分钟后再次添加");
         }
         for (SeedEntity seedEntity : list) {
@@ -53,12 +53,24 @@ public class SeedDaoImpl implements ISeedDao {
         SeedEntity seedEntity = BeanCopyUtils.copy(seedRequestDTO, SeedEntity.class);
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
-        if(!CollectionUtils.isEmpty(seedEntities)){
+        if (!CollectionUtils.isEmpty(seedEntities)) {
             throw new RuntimeException("请等1分钟后再次添加");
         }
         seedEntity.setIp(realIpAddress);
         seedEntity.setCreatedTime(new Date());
         seedService.save(seedEntity);
+    }
+
+    @Override
+    @Transactional
+    public String delete(String id, HttpServletRequest servletRequest) {
+        String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
+        SeedEntity seedEntity = seedService.findByIpAndId(realIpAddress,id);
+        if(seedEntity == null){
+            return "老哥，只能删自己的消息，如果自己的消息删不掉请进群反馈";
+        }
+        seedService.deleteByIpAndId(realIpAddress, id);
+        return "删除成功";
     }
 
 
@@ -73,11 +85,15 @@ public class SeedDaoImpl implements ISeedDao {
                 if (!StringUtils.isEmpty(keyValue)) {
                     Predicate name = criteriaBuilder.like(root.get("name"), "%" + keyValue + "%");
                     Predicate roleName = criteriaBuilder.like(root.get("roleName"), "%" + keyValue + "%");
-                    predicates.add(criteriaBuilder.or(name,roleName));
+                    predicates.add(criteriaBuilder.or(name, roleName));
                 }
                 String serverName = pageQuery.getServerName();
                 if (!StringUtils.isEmpty(serverName)) {
                     predicates.add(criteriaBuilder.equal(root.get("serverName"), serverName));
+                }
+                String sellOrBuy = pageQuery.getSellOrBuy();
+                if (!StringUtils.isEmpty(sellOrBuy)) {
+                    predicates.add(criteriaBuilder.equal(root.get("sellOrBuy"), sellOrBuy));
                 }
                 return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
             }
@@ -91,7 +107,6 @@ public class SeedDaoImpl implements ISeedDao {
         seedEntities.setRows(list);
         return seedEntities;
     }
-
 
 
 }

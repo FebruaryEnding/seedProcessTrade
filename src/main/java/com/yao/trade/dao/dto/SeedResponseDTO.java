@@ -95,7 +95,7 @@ public class SeedResponseDTO {
     }
 
     public void generateWhisperAndResult() {
-        this.whisper = "@" + roleName + " " + (sellOrBuy.equals("wts") ? "buy" : "sell") + " <" + name + "> " + price;
+        this.whisper = "@" + roleName + " 老哥，我要" + (sellOrBuy.equals("买") ? "卖" : "买") + " <" + name + "> " + price+ unit;
         this.result = roleName + " " + sellOrBuy + " " + name + " " + price + "--" + createdTime;
     }
 

@@ -6,6 +6,16 @@ public class SeedQuery extends PageQuery {
 
     private String serverName;
 
+    private String sellOrBuy;
+
+    public String getSellOrBuy() {
+        return sellOrBuy;
+    }
+
+    public void setSellOrBuy(String sellOrBuy) {
+        this.sellOrBuy = sellOrBuy;
+    }
+
     public String getServerName() {
         return serverName;
     }
