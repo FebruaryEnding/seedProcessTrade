@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>种子库</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style type="text/css">
+        a {
+            width: 23px;
+            height: 23px;
+            border: 1px solid #dce0e0;
+            text-align: center;
+            margin: 0 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .current {
+            background-color: #5ac3e7;
+        }
+    </style>
+
+</head>
+<body style="background: #A3D0C3;">
+<div class="search d1">
+    <form>
+        <input id="searchInfo" type="text" placeholder="start search...">
+        <button onclick="search()" type="submit"></button>
+    </form>
+</div>
+<div style="text-align: center;font-size: 20px;" id="data-list">
+    <!--这里是列表-->
+</div>
+<div id="page"></div>
+</body>
+
+<script src="http://luopq.com/demo/lib/jquery-1.10.2.min.js"></script>
+<script src="../../js/paging.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+
+    let page = 1;
+    let totalPage = 1;
+    let pageSize = 1;
+
+    let url = 'http://127.0.0.1:8888/seedTrade';
+    $(function () {
+        $('#page').paging({
+            pageNo: 2, totalPage: 10, callback: function (cur) {
+                console.log(cur);
+            }
+        });
+    });
+    window.onload = function () {
+        console.log("页面初始化");
+        this.getInfo(page);
+    }
+
+    function getInfo(page) {
+        console.log("获取列表");
+        let searchInfo = document.getElementById("searchInfo");
+        let searchText = searchInfo.value;
+        console.log(searchText);
+        $.get(url + "/seed?page=" + page + "&pageSize=" + pageSize + "&keyValue=" + searchText, function (data, status) {
+            totalPage = data.totalPage;
+            let rows = data.rows;
+            let htmlString = "";
+            for (i = 0; i < rows.length; i++) {
+                htmlString += "\t<li style=\"margin:10px auto;\">" + rows[i].result + "</li>"
+            }
+            let list = document.getElementById("data-list");
+            list.innerHTML = htmlString
+            totalPage = data.totalPage;
+        });
+    }
+
+    function search() {
+        console.log("点击搜索");
+        this.getInfo(1);
+    }
+
+</script>
+
+</html>
