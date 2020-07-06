@@ -15,5 +15,5 @@ public interface ISeedDao {
 
     void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest);
 
-    String delete(String id, HttpServletRequest servletRequest);
+    String delete(String id, String operateNumber, HttpServletRequest servletRequest);
 }

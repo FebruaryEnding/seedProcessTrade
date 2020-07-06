@@ -70,9 +70,9 @@ public class SeedController {
     }
 
     @ApiOperation("删除")
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id")String id,HttpServletRequest servletRequest){
-        String result= seedDao.delete(id,servletRequest);
+    @DeleteMapping("/{id}/{operateNumber}")
+    public String delete(@PathVariable("id")String id,@PathVariable("operateNumber")String operateNumber ,HttpServletRequest servletRequest){
+        String result= seedDao.delete(id,operateNumber,servletRequest);
         return result;
     }
 }

@@ -39,7 +39,7 @@ public class SeedDaoImpl implements ISeedDao {
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
         if (!CollectionUtils.isEmpty(seedEntities)) {
-            throw new RuntimeException("请等1分钟后再次添加");
+            throw new RuntimeException("请等10秒钟后再次添加");
         }
         for (SeedEntity seedEntity : list) {
             seedEntity.setIp(realIpAddress);
@@ -54,7 +54,7 @@ public class SeedDaoImpl implements ISeedDao {
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
         if (!CollectionUtils.isEmpty(seedEntities)) {
-            throw new RuntimeException("请等1分钟后再次添加");
+            throw new RuntimeException("请等10秒钟后再次添加");
         }
         seedEntity.setIp(realIpAddress);
         seedEntity.setCreatedTime(new Date());
@@ -63,13 +63,15 @@ public class SeedDaoImpl implements ISeedDao {
 
     @Override
     @Transactional
-    public String delete(String id, HttpServletRequest servletRequest) {
-        String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
-        SeedEntity seedEntity = seedService.findByIpAndId(realIpAddress,id);
+    public String delete(String id, String operateNumber, HttpServletRequest servletRequest) {
+        SeedEntity seedEntity = seedService.findById(id);
         if(seedEntity == null){
+            return "老哥，消息不存在啊";
+        }
+        if(!seedEntity.getOperateNumber().equals(operateNumber)){
             return "老哥，只能删自己的消息，如果自己的消息删不掉请进群反馈";
         }
-        seedService.deleteByIpAndId(realIpAddress, id);
+        seedService.deleteById( id);
         return "删除成功";
     }
 
