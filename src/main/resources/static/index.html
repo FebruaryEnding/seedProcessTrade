@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>种子库</title>
+    <title>种植工艺库</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -88,7 +88,7 @@
         <!-- 搜索框 -->
         <div class="search-box">
             <div class="search-con">
-                <el-input class="search-item search-input" placeholder="种子 / 角色名" suffix-icon="el-icon-search"
+                <el-input class="search-item search-input" placeholder="种植工艺 / 角色名" suffix-icon="el-icon-search"
                           v-model="searchInfo.keyValue" @change="onSearch">
                 </el-input>
                 <el-select class="search-item" v-model="searchInfo.serverName" clearable @change="onSearch"
@@ -114,9 +114,9 @@
                 <el-table-column prop="createdTime" label="创建时间" min-width="160">
                 </el-table-column>
 
-                <el-table-column prop="name" label="种子" min-width="300">
+                <el-table-column prop="name" label="种植工艺" min-width="300">
                     <template slot-scope="scope">
-                        <el-popover placement="right" title="种子" width="200" trigger="hover">
+                        <el-popover placement="right" title="种植工艺" width="200" trigger="hover">
                             <p>{{scope.row.name}}</p>
                             <div slot="reference" class="overHid-1">
                                 <span>{{scope.row.name}}</span>
@@ -162,11 +162,11 @@
     </div>
 
     <!-- 添加 -->
-    <el-dialog title="添加种子" :visible="dialogVisible" width="500px" @close="onDialogCancel">
+    <el-dialog title="添加种植工艺" :visible="dialogVisible" width="500px" @close="onDialogCancel">
         <el-form :model="ruleForm" label-width="60px">
 
-            <el-form-item label="种子" prop="name">
-                <el-select v-model="ruleForm.name" style="width: 300px;" filterable placeholder="搜索种子名称">
+            <el-form-item label="种植工艺" prop="name">
+                <el-select v-model="ruleForm.name" style="width: 300px;" filterable placeholder="搜索种植工艺名称">
                     <el-option style="width: 600px;" v-for="item in nameList" :key="item.value" :label="item.value"
                                :value="item.value">
                     </el-option>
@@ -282,7 +282,7 @@
             // 获取公告
             this.getAnno()
 
-            // 获取种子列表
+            // 获取种植工艺列表
             this.getNameList()
         },
         methods: {
@@ -337,9 +337,7 @@
                             message: res,
                             type: 'success'
                         });
-
                         this.onDialogCancel()
-
                         this.onSearch()
                     }.bind(this),
                 })
@@ -362,7 +360,7 @@
             },
             onCopy(row) {
                 this.$message({
-                    message: '您复制了一条种子密钥！',
+                    message: '您复制了一条种植工艺密钥！',
                     type: 'success'
                 });
 
