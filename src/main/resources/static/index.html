@@ -345,7 +345,14 @@
                 this.dialogDelVisible = false
             },
             onDialogOk() {
-                this.dialogLoading = true
+                this.dialogLoading = true;
+                if( this.ruleForm.operateNumber === '' ||this.ruleForm.operateNumber === 'undefine' ){
+                    this.$message({
+                        message: '请输入删除密钥',
+                        type: 'error'
+                    });
+                    return;
+                }
                 $.ajax({
                     type: 'post',
                     url: '/seedTrade/seed',
