@@ -50,6 +50,9 @@ public class SeedDaoImpl implements ISeedDao {
 
     @Override
     public void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
+        if(StringUtils.isEmpty(seedRequestDTO.getOperateNumber())){
+            throw new RuntimeException("老哥填下删除密钥");
+        }
         SeedEntity seedEntity = BeanCopyUtils.copy(seedRequestDTO, SeedEntity.class);
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
