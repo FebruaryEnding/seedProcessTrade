@@ -42,6 +42,9 @@ public class SeedDaoImpl implements ISeedDao {
             throw new RuntimeException("请等10秒钟后再次添加");
         }
         for (SeedEntity seedEntity : list) {
+            if(StringUtils.isEmpty(seedEntity.getOperateNumber())){
+                throw new RuntimeException("老哥填下删除密钥");
+            }
             seedEntity.setIp(realIpAddress);
             seedEntity.setCreatedTime(new Date());
         }
