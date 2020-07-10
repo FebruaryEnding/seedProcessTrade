@@ -10,6 +10,7 @@
 
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./components/add-more/add-more.css">
 
     <!-- 引入组件库 -->
     <script src="http://luopq.com/demo/lib/jquery-1.10.2.min.js"></script>
@@ -79,340 +80,382 @@
 </head>
 
 <body>
-<div class="wrapper" v-cloak>
-    <div class="content">
-        <!-- 提示框 -->
-        <el-alert v-if="anno" :closable="false" :title="anno" type="warning" show-icon>
-        </el-alert>
+    <div class="wrapper" v-cloak>
+        <div class="content">
+            <!-- 提示框 -->
+            <el-alert v-if="anno" :closable="false" :title="anno" type="warning" show-icon>
+            </el-alert>
 
-        <!-- 搜索框 -->
-        <div class="search-box">
-            <div class="search-con">
-                <el-input class="search-item search-input" placeholder="种植工艺 / 角色名" suffix-icon="el-icon-search"
-                          v-model="searchInfo.keyValue" @change="onSearch">
-                </el-input>
-                <el-select class="search-item" v-model="searchInfo.serverName" clearable @change="onSearch"
-                           placeholder="请选择服务器">
-                    <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-select class="search-item" v-model="searchInfo.sellOrBuy" clearable @change="onSearch"
-                           placeholder="请选择买卖类型">
-                    <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <div class="search-con">
+                    <el-input class="search-item search-input" placeholder="种植工艺 / 角色名" suffix-icon="el-icon-search"
+                        v-model="searchInfo.keyValue" @change="onSearch">
+                    </el-input>
+                    <el-select class="search-item" v-model="searchInfo.serverName" clearable @change="onSearch"
+                        placeholder="请选择服务器">
+                        <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-select class="search-item" v-model="searchInfo.sellOrBuy" clearable @change="onSearch"
+                        placeholder="请选择买卖类型">
+                        <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+
+                <div class="add-con">
+                    <el-button class="btn" icon="el-icon-plus" type="primary" @click="onMoreAdd">批量添加</el-button>
+                    <el-button class="btn" icon="el-icon-plus" type="primary" @click="onOneAdd">单个添加</el-button>
+                </div>
             </div>
 
-            <div class="add-con">
-                <el-button icon="el-icon-plus" type="primary" @click="onAdd">添加</el-button>
+            <!-- 列表 -->
+            <div class="list-box">
+                <el-table :data="dataList" style="width: 100%">
+                    <el-table-column prop="createdTime" label="创建时间" min-width="160">
+                    </el-table-column>
+
+                    <el-table-column prop="name" label="种植工艺" min-width="300">
+                        <template slot-scope="scope">
+                            <el-popover placement="right" title="种植工艺" width="200" trigger="hover">
+                                <p>{{scope.row.name}}</p>
+                                <div slot="reference" class="overHid-1">
+                                    <span>{{scope.row.name}}</span>
+                                </div>
+                            </el-popover>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="roleName" label="角色名" min-width="200">
+                    </el-table-column>
+
+                    <el-table-column prop="level" label="等级">
+                    </el-table-column>
+
+                    <el-table-column prop="price" label="价格">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.price}}/{{scope.row.unit}}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="sellOrBuy" label="买卖">
+                    </el-table-column>
+
+                    <el-table-column prop="serverName" label="服务器">
+                    </el-table-column>
+
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="onCopy(scope.row)" type="text" size="small">copy</el-button>
+                            <el-button @click="showDel(scope.row)" type="text" size="small">del</el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination-box">
+                <el-pagination background @current-change="onPaginationChange" layout="prev, pager, next"
+                    :total="totalCount" :hide-on-single-page="true">
+                </el-pagination>
             </div>
         </div>
-
-        <!-- 列表 -->
-        <div class="list-box">
-            <el-table :data="dataList" style="width: 100%">
-                <el-table-column prop="createdTime" label="创建时间" min-width="160">
-                </el-table-column>
-
-                <el-table-column prop="name" label="种植工艺" min-width="300">
-                    <template slot-scope="scope">
-                        <el-popover placement="right" title="种植工艺" width="200" trigger="hover">
-                            <p>{{scope.row.name}}</p>
-                            <div slot="reference" class="overHid-1">
-                                <span>{{scope.row.name}}</span>
-                            </div>
-                        </el-popover>
-                    </template>
-                </el-table-column>
-
-                <el-table-column prop="roleName" label="角色名" min-width="200">
-                </el-table-column>
-
-                <el-table-column prop="level" label="等级">
-                </el-table-column>
-
-                <el-table-column prop="price" label="价格">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.price}}/{{scope.row.unit}}</span>
-                    </template>
-                </el-table-column>
-
-                <el-table-column prop="sellOrBuy" label="买卖">
-                </el-table-column>
-
-                <el-table-column prop="serverName" label="服务器">
-                </el-table-column>
-
-                <el-table-column fixed="right" label="操作" width="100">
-                    <template slot-scope="scope">
-                        <el-button @click="onCopy(scope.row)" type="text" size="small">copy</el-button>
-                        <el-button @click="showDel(scope.row)" type="text" size="small">del</el-button>
-                    </template>
-                </el-table-column>
-
-            </el-table>
-        </div>
-
-        <!-- 分页 -->
-        <div class="pagination-box">
-            <el-pagination background @current-change="onPaginationChange" layout="prev, pager, next"
-                           :total="totalCount" :hide-on-single-page="true">
-            </el-pagination>
-        </div>
-    </div>
-    <el-dialog title = "删除" :visible="dialogDelVisible"  width="500px"  @close="onDelDialogCancel">
-        <el-input style="width: 300px;" v-model="operateNumber" placeholder="请输入删除密钥"></el-input>
-        <span slot="footer" class="dialog-footer">
+        <el-dialog title="删除" :visible="dialogDelVisible" width="500px" @close="onDelDialogCancel">
+            <el-input style="width: 300px;" v-model="operateNumber" placeholder="请输入删除密钥"></el-input>
+            <span slot="footer" class="dialog-footer">
                 <el-button @click="onDelDialogCancel">取 消</el-button>
                 <el-button type="primary" :loading="dialogLoading" @click="onDel">确 定</el-button>
             </span>
-    </el-dialog>
+        </el-dialog>
 
-    <!-- 添加 -->
-    <el-dialog title="添加种植工艺" :visible="dialogVisible" width="500px" @close="onDialogCancel">
-        <el-form :model="ruleForm" label-width="60px">
+        <!-- 批量添加 -->
+        <div class="add-more">
+            <!-- 添加预览 -->
+            <!-- <el-card class="card-show">
+                <div slot="header" class="card-header">
+                    <span>添加预览</span>
+                    <div class="card-btns">
+                        <el-button type="primary" @click="onSubmit">提交</el-button>
+                    </div>
+                </div>
 
-            <el-form-item label="种植工艺" prop="name">
-                <el-select v-model="ruleForm.name" style="width: 300px;" filterable placeholder="搜索种植工艺名称">
-                    <el-option style="width: 600px;" v-for="item in nameList" :key="item.value" :label="item.value"
-                               :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+                <el-table
+                    :data="showInfo.tableData"
+                    style="width: 100%"
+                    border>
 
-            <el-form-item label="等级" prop="level">
-                <el-input-number style="width: 300px;" v-model="ruleForm.level" :precision="0"></el-input-number>
-            </el-form-item>
+                    <el-table-column
+                    fixed
+                    width="100">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.type}}</span>
+                    </template>
+                    </el-table-column>
 
-            <el-form-item label="角色名" prop="roleName">
-                <el-input style="width: 300px;" v-model="ruleForm.roleName" placeholder="请输入角色名"></el-input>
-            </el-form-item>
+                    <el-table-column
+                    width="140" v-for="item in showInfo.tableTitle" :label="titleKey[item]">
+                    <template slot-scope="scope">
+                        <span>{{scope.row[item].number}}（{{scope.row[item].price}}/{{scope.row[item].unit}}）</span>
+                    </template>
+                    </el-table-column>
 
-            <el-form-item label="服务器" prop="serverName">
-                <el-select style="width: 300px;" v-model="ruleForm.serverName">
-                    <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+                </el-table>
+            </el-card> -->
+        </div>
 
-            <el-form-item label="买卖" prop="sellOrBuy">
-                <el-select style="width: 300px;" v-model="ruleForm.sellOrBuy">
-                    <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+        <!-- 单个添加 -->
+        <el-dialog title="添加种植工艺" :visible="dialogVisible" width="500px" @close="onDialogCancel">
+            <el-form :model="ruleForm" label-width="100px">
 
-            <el-form-item label="价格" prop="price">
-                <el-input placeholder="请输入单价" type="number" v-model="ruleForm.price" style="width: 300px;">
-                </el-input>
-            </el-form-item>
+                <el-form-item label="种植工艺" prop="name">
+                    <el-select v-model="ruleForm.name" style="width: 300px;" filterable placeholder="搜索种植工艺名称">
+                        <el-option style="width: 600px;" v-for="item in nameList" :key="item.value" :label="item.value"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
 
-            <el-form-item label="单位" prop="unitType">
-                <el-select style="width: 300px;" v-model="ruleForm.unit">
-                    <el-option v-for="item in unitType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+                <el-form-item label="等级" prop="level">
+                    <el-input-number style="width: 300px;" v-model="ruleForm.level" :precision="0"></el-input-number>
+                </el-form-item>
 
-            <el-form-item label="删除密钥" prop="operateNumber">
-                <el-input style="width: 300px;" v-model="ruleForm.operateNumber" placeholder="请输入删除密钥(删除操作需要)"></el-input>
-            </el-form-item>
+                <el-form-item label="角色名" prop="roleName">
+                    <el-input style="width: 300px;" v-model="ruleForm.roleName" placeholder="请输入角色名"></el-input>
+                </el-form-item>
 
+                <el-form-item label="服务器" prop="serverName">
+                    <el-select style="width: 300px;" v-model="ruleForm.serverName">
+                        <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
 
-        </el-form>
+                <el-form-item label="买卖" prop="sellOrBuy">
+                    <el-select style="width: 300px;" v-model="ruleForm.sellOrBuy">
+                        <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
 
-        <span slot="footer" class="dialog-footer">
+                <el-form-item label="单价/单位">
+                    <el-input placeholder="请输入内容" type="number" v-model="ruleForm.price" style="width: 300px;"
+                        class="input-with-select">
+                        <el-select style="width: 80px;" v-model="ruleForm.unit" slot="append">
+                            <el-option v-for="item in unitType" :key="item.value" :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="删除密钥" prop="operateNumber">
+                    <el-input style="width: 300px;" v-model="ruleForm.operateNumber" placeholder="请输入删除密钥(删除操作需要)">
+                    </el-input>
+                </el-form-item>
+
+            </el-form>
+
+            <span slot="footer" class="dialog-footer">
                 <el-button @click="onDialogCancel">取 消</el-button>
                 <el-button type="primary" :loading="dialogLoading" @click="onDialogOk">确 定</el-button>
             </span>
-    </el-dialog>
-</div>
+        </el-dialog>
+    </div>
 
-<script>
-    var vm = new Vue({
-        el: '.wrapper',
-        data() {
-            return {
-                searchInfo: {
-                    keyValue: '',
-                    serverName: '',
-                    sellOrBuy: '',
-                    page: 1,
-                    pageSize: 10
-                },
-                ruleForm: {
-                    name: '',
-                    level: 83,
-                    roleName: '',
-                    serverName: '国际服',
-                    sellOrBuy: '卖',
-                    price: 1,
-                    unit: 'c',
-                    operateNumber:'',
-                },
-                operateNumber:'',
-                dialogDelVisible:false,
-                dialogVisible: false,
-                dialogLoading: false,
-                anno: '',
-                totalCount: 0,
-                dataList: [],
-                nameList: [],
-                serverType: [
-                    {
-                        value: '国际服',
-                        label: '国际服',
+    <footer>
+        <p style="text-align:center;">
+            <a href="http://www.beian.miit.gov.cn" target="_blank"
+                style="color: #999; font-size: 12px;">苏ICP备19059496号</a>
+        </p>
+    </footer>
+
+    <script>
+        var _wrapper = new Vue({
+            el: '.wrapper',
+            data() {
+                return {
+                    searchInfo: {
+                        keyValue: '',
+                        serverName: '',
+                        sellOrBuy: '',
+                        page: 1,
+                        pageSize: 10
                     },
-                    {
-                        value: '国服',
-                        label: '国服',
+                    ruleForm: {
+                        name: '',
+                        level: 83,
+                        roleName: '',
+                        serverName: '国际服',
+                        sellOrBuy: '卖',
+                        price: 1,
+                        unit: 'c',
+                        operateNumber: '',
                     },
-                ],
-                saleType: [
-                    {
-                        value: '卖',
-                        label: '卖',
-                    },
-                    {
-                        value: '买',
-                        label: '买',
-                    },
-                ],
-                unitType: [
-                    {
-                        value: 'c',
-                        label: 'c',
-                    },
-                    {
-                        value: 'e',
-                        label: 'e',
-                    },
-                ],
-                delRow:{},
-            }
-        },
-        mounted() {
-            // 获取列表
-            this.getList()
-
-            // 获取公告
-            this.getAnno()
-
-            // 获取种植工艺列表
-            this.getNameList()
-        },
-        methods: {
-            showDel(row){
-                this.dialogDelVisible = true;
-                this.delRow = row;
-            },
-            getNameList() {
-                $.get('/seedTrade/seed/affix', {}, function (res) {
-                    this.nameList = res
-
-                    console.log(res)
-                }.bind(this))
-            },
-            getList() {
-                $.get('/seedTrade/seed', this.searchInfo, function (res) {
-                    this.dataList = res.rows
-
-                    this.totalCount = res.totalCount
-                }.bind(this))
-            },
-            getAnno() {
-                $.get('/seedTrade/seed/anno', {}, function (res) {
-                    this.anno = res
-                }.bind(this))
-            },
-            onPaginationChange(val) {
-                this.searchInfo.page = val
-
-                this.getList()
-            },
-            onSearch() {
-                this.searchInfo.page = 1
-
-                this.getList()
-            },
-            onAdd() {
-                this.dialogVisible = !this.dialogVisible
-            },
-            onDialogCancel() {
-                this.dialogVisible = false
-            },
-            onDelDialogCancel(){
-                this.dialogDelVisible = false
-            },
-            onDialogOk() {
-                this.dialogLoading = true;
-                if( this.ruleForm.operateNumber === '' ||this.ruleForm.operateNumber === 'undefine' ){
-                    this.$message({
-                        message: '请输入删除密钥',
-                        type: 'error'
-                    });
-                    this.dialogLoading = false;
-                    return;
+                    operateNumber: '',
+                    dialogDelVisible: false,
+                    dialogVisible: false,
+                    dialogLoading: false,
+                    anno: '',
+                    totalCount: 0,
+                    dataList: [],
+                    nameList: [],
+                    serverType: [
+                        {
+                            value: '国际服',
+                            label: '国际服',
+                        },
+                        {
+                            value: '国服',
+                            label: '国服',
+                        },
+                    ],
+                    saleType: [
+                        {
+                            value: '卖',
+                            label: '卖',
+                        },
+                        {
+                            value: '买',
+                            label: '买',
+                        },
+                    ],
+                    unitType: [
+                        {
+                            value: 'c',
+                            label: 'c',
+                        },
+                        {
+                            value: 'e',
+                            label: 'e',
+                        },
+                    ],
+                    delRow: {},
                 }
-                $.ajax({
-                    type: 'post',
-                    url: '/seedTrade/seed',
-                    contentType: 'application/json',
-                    data: JSON.stringify([this.ruleForm]),
-                    complete: function (data) {
-                        this.dialogLoading = false
-                    }.bind(this),
-                    success: function (res) {
+            },
+            mounted() {
+                // 获取列表
+                this.getList()
+
+                // 获取公告
+                this.getAnno()
+
+                // 获取种植工艺列表
+                this.getNameList()
+            },
+            methods: {
+                showDel(row) {
+                    this.dialogDelVisible = true;
+                    this.delRow = row;
+                },
+                getNameList() {
+                    $.get('/seedTrade/seed/affix', {}, function (res) {
+                        this.nameList = res
+                    }.bind(this))
+                },
+                getList() {
+                    $.get('/seedTrade/seed', this.searchInfo, function (res) {
+                        this.dataList = res.rows
+
+                        this.totalCount = res.totalCount
+                    }.bind(this))
+                },
+                getAnno() {
+                    $.get('/seedTrade/seed/anno', {}, function (res) {
+                        this.anno = res
+                    }.bind(this))
+                },
+                onPaginationChange(val) {
+                    this.searchInfo.page = val
+
+                    this.getList()
+                },
+                onSearch() {
+                    this.searchInfo.page = 1
+
+                    this.getList()
+                },
+                onMoreAdd() {
+                    _addMore.show()
+                },
+                onOneAdd() {
+                    this.dialogVisible = !this.dialogVisible
+                },
+                onDialogCancel() {
+                    this.dialogVisible = false
+                },
+                onDelDialogCancel() {
+                    this.dialogDelVisible = false
+                },
+                onDialogOk() {
+                    if (!this.ruleForm.operateNumber) {
                         this.$message({
-                            message: res,
-                            type: 'success'
+                            message: '请输入删除密钥',
+                            type: 'error'
                         });
-                        this.onDialogCancel()
-                        this.onSearch()
-                    }.bind(this),
-                })
-            },
-            onDel() {
-                let row = this.delRow;
-                let operateNum = this.operateNumber;
-                $.ajax({
-                    type: 'delete',
-                    url: `/seedTrade/seed/${row.id}/`+operateNum,
-                    contentType: 'application/json',
-                    data: JSON.stringify({}),
-                    success: function (res) {
-                        this.$message({
-                            message: res,
-                            type: 'success'
-                        });
+                        return;
+                    }
 
-                        this.onSearch()
-                    }.bind(this),
-                });
-                this.dialogDelVisible = false
-            },
-            onCopy(row) {
-                this.$message({
-                    message: '您复制了一条种植工艺密钥！',
-                    type: 'success'
-                });
+                    this.dialogLoading = true
+                    $.ajax({
+                        type: 'post',
+                        url: '/seedTrade/seed',
+                        contentType: 'application/json',
+                        data: JSON.stringify([this.ruleForm]),
+                        complete: function (data) {
+                            this.dialogLoading = false
+                        }.bind(this),
+                        success: function (res) {
+                            this.$message({
+                                message: res,
+                                type: 'success'
+                            });
+                            this.onDialogCancel()
+                            this.onSearch()
+                        }.bind(this),
+                    })
+                },
+                onDel() {
+                    let row = this.delRow;
+                    let operateNum = this.operateNumber;
+                    $.ajax({
+                        type: 'delete',
+                        url: `/seedTrade/seed/${row.id}/` + operateNum,
+                        contentType: 'application/json',
+                        data: JSON.stringify({}),
+                        success: function (res) {
+                            this.$message({
+                                message: res,
+                                type: 'success'
+                            });
 
-                var oInput = document.createElement('input')
-                oInput.setAttribute('id', 'copy')
-                oInput.value = row.whisper
-                document.getElementsByTagName('body')[0].appendChild(oInput)
+                            this.onSearch()
+                        }.bind(this),
+                    });
+                    this.dialogDelVisible = false
+                },
+                onCopy(row) {
+                    this.$message({
+                        message: '您复制了一条种植工艺密钥！',
+                        type: 'success'
+                    });
 
-                document.getElementById('copy').select()
-                document.execCommand('Copy')
-                document.getElementById('copy').remove()
+                    var oInput = document.createElement('input')
+                    oInput.setAttribute('id', 'copy')
+                    oInput.value = row.whisper
+                    document.getElementsByTagName('body')[0].appendChild(oInput)
+
+                    document.getElementById('copy').select()
+                    document.execCommand('Copy')
+                    document.getElementById('copy').remove()
+                },
             },
-        },
-    })
-</script>
+        })
+    </script>
+
+    <script src="./components/add-more/add-more.js"></script>
+
 </body>
-<footer>
-    <p style="text-align:center;">
-        <a href="http://www.beian.miit.gov.cn" target="_blank" style="color: #999; font-size: 12px;">苏ICP备19059496号</a>
-    </p>>
-</footer>
+
 </html>

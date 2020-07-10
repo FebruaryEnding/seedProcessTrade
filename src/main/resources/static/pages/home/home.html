@@ -2,8 +2,11 @@
 <html>
 
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <title>种子库</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../css/style.css">
@@ -19,25 +22,367 @@
             display: inline-block;
         }
 
-        .current {
-            background-color: #5ac3e7;
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #A3D0C3;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .overHid-1 {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .wrapper {
+            position: relative;
+        }
+
+        .content {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+
+        .search-con {
+            display: flex;
+        }
+
+        .search-con .search-input {
+            width: 200px;
+        }
+
+        .search-con .search-item:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        .pagination-box {
+            display: flex;
+            justify-content: center;
+            margin: 10px auto 0;
+        }
+
+        .list-box .el-table td {
+            padding: 4px 0;
         }
     </style>
-
 </head>
-<body style="background: #A3D0C3;">
-<div class="search d1">
-    <form>
-        <input id="searchInfo" type="text" placeholder="start search...">
-        <button onclick="search()" type="submit"></button>
-    </form>
-</div>
-<div style="text-align: center;font-size: 20px;" id="data-list">
-    <!--这里是列表-->
-</div>
-<div id="page"></div>
+
+<body>
+    <div class="wrapper" v-cloak>
+        <div class="content">
+            <!-- 提示框 -->
+            <el-alert v-if="anno" :closable="false" :title="anno" type="warning" show-icon>
+            </el-alert>
+
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <div class="search-con">
+                    <el-input class="search-item search-input" placeholder="种子 / 角色名" suffix-icon="el-icon-search"
+                        v-model="searchInfo.keyValue" @change="onSearch">
+                    </el-input>
+                    <el-select class="search-item" v-model="searchInfo.serverName" clearable @change="onSearch"
+                        placeholder="请选择服务器">
+                        <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-select class="search-item" v-model="searchInfo.sellOrBuy" clearable @change="onSearch"
+                        placeholder="请选择买卖类型">
+                        <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+
+                <div class="add-con">
+                    <el-button icon="el-icon-plus" type="primary" @click="onAdd">添加</el-button>
+                </div>
+            </div>
+
+            <!-- 列表 -->
+            <div class="list-box">
+                <el-table :data="dataList" style="width: 100%">
+                    <el-table-column prop="createdTime" label="创建时间" min-width="160">
+                    </el-table-column>
+
+                    <el-table-column prop="name" label="种子" min-width="300">
+                        <template slot-scope="scope">
+                            <el-popover placement="right" title="种子" width="200" trigger="hover">
+                                <p>{{scope.row.name}}</p>
+                                <div slot="reference" class="overHid-1">
+                                    <span>{{scope.row.name}}</span>
+                                </div>
+                            </el-popover>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="roleName" label="角色名" min-width="200">
+                    </el-table-column>
+
+                    <el-table-column prop="level" label="等级">
+                    </el-table-column>
+
+                    <el-table-column prop="price" label="价格">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.price}}/{{scope.row.unit}}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="sellOrBuy" label="买卖">
+                    </el-table-column>
+
+                    <el-table-column prop="serverName" label="服务器">
+                    </el-table-column>
+
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="onCopy(scope.row)" type="text" size="small">copy</el-button>
+                            <el-button @click="onDel(scope.row)" type="text" size="small">del</el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination-box">
+                <el-pagination background @current-change="onPaginationChange" layout="prev, pager, next"
+                    :total="totalCount" :hide-on-single-page="true">
+                </el-pagination>
+            </div>
+        </div>
+
+        <!-- 添加 -->
+        <el-dialog title="添加种子" :visible="dialogVisible" width="500px" @close="onDialogCancel">
+            <el-form :model="ruleForm" label-width="60px">
+
+                <el-form-item label="种子" prop="name">
+                    <el-select v-model="ruleForm.name" style="width: 300px;" filterable placeholder="搜索种子名称">
+                        <el-option style="width: 600px;" v-for="item in nameList" :key="item.value" :label="item.value"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="等级" prop="level">
+                    <el-input-number style="width: 300px;" v-model="ruleForm.level" :precision="0"></el-input-number>
+                </el-form-item>
+
+                <el-form-item label="角色名" prop="roleName">
+                    <el-input style="width: 300px;" v-model="ruleForm.roleName" placeholder="请输入角色名"></el-input>
+                </el-form-item>
+
+                <el-form-item label="服务器" prop="serverName">
+                    <el-select style="width: 300px;" v-model="ruleForm.serverName">
+                        <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="买卖" prop="sellOrBuy">
+                    <el-select style="width: 300px;" v-model="ruleForm.sellOrBuy">
+                        <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="价格" prop="price">
+                    <el-input placeholder="请输入单价" type="number" v-model="ruleForm.price" style="width: 300px;">
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="单位" prop="unitType">
+                    <el-select style="width: 300px;" v-model="ruleForm.unit">
+                        <el-option v-for="item in unitType" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+            </el-form>
+
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="onDialogCancel">取 消</el-button>
+                <el-button type="primary" :loading="dialogLoading" @click="onDialogOk">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '.wrapper',
+            data() {
+                return {
+                    searchInfo: {
+                        keyValue: '',
+                        serverName: '',
+                        sellOrBuy: '',
+                        page: 1,
+                        pageSize: 10
+                    },
+                    ruleForm: {
+                        name: '',
+                        level: 83,
+                        roleName: '',
+                        serverName: '国际服',
+                        sellOrBuy: '卖',
+                        price: 1,
+                        unit: 'c',
+                    },
+                    dialogVisible: false,
+                    dialogLoading: false,
+                    anno: '',
+                    totalCount: 0,
+                    dataList: [],
+                    nameList: [],
+                    serverType: [
+                        {
+                            value: '国际服',
+                            label: '国际服',
+                        },
+                        {
+                            value: '国服',
+                            label: '国服',
+                        },
+                    ],
+                    saleType: [
+                        {
+                            value: '卖',
+                            label: '卖',
+                        },
+                        {
+                            value: '买',
+                            label: '买',
+                        },
+                    ],
+                    unitType: [
+                        {
+                            value: 'c',
+                            label: 'c',
+                        },
+                        {
+                            value: 'e',
+                            label: 'e',
+                        },
+                    ],
+                }
+            },
+            mounted() {
+                // 获取列表
+                this.getList()
+
+                // 获取公告
+                this.getAnno()
+
+                // 获取种子列表
+                this.getNameList()
+            },
+            methods: {
+                getNameList() {
+                    $.get('/seedTrade/seed/affix', {}, function (res) {
+                        this.nameList = res
+
+                        console.log(res)
+                    }.bind(this))
+                },
+                getList() {
+                    $.get('/seedTrade/seed', this.searchInfo, function (res) {
+                        this.dataList = res.rows
+
+                        this.totalCount = res.totalCount
+                    }.bind(this))
+                },
+                getAnno() {
+                    $.get('/seedTrade/seed/anno', {}, function (res) {
+                        this.anno = res
+                    }.bind(this))
+                },
+                onPaginationChange(val) {
+                    this.searchInfo.page = val
+
+                    this.getList()
+                },
+                onSearch() {
+                    this.searchInfo.page = 1
+
+                    this.getList()
+                },
+                onAdd() {
+                    this.dialogVisible = !this.dialogVisible
+                },
+                onDialogCancel() {
+                    this.dialogVisible = false
+                },
+                onDialogOk() {
+                    this.dialogLoading = true
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/seedTrade/seed',
+                        contentType: 'application/json',
+                        data: JSON.stringify([this.ruleForm]),
+                        complete: function (data) {
+                            this.dialogLoading = false
+                        }.bind(this),
+                        success: function (res) {
+                            this.$message({
+                                message: res,
+                                type: 'success'
+                            });
+
+                            this.onDialogCancel()
+
+                            this.onSearch()
+                        }.bind(this),
+                    })
+                },
+                onDel(row) {
+                    $.ajax({
+                        type: 'delete',
+                        url: `/seedTrade/seed/${row.id}`,
+                        contentType: 'application/json',
+                        data: JSON.stringify({}),
+                        success: function (res) {
+                            this.$message({
+                                message: res,
+                                type: 'success'
+                            });
+
+                            this.onSearch()
+                        }.bind(this),
+                    })
+                },
+                onCopy(row) {
+                    this.$message({
+                        message: '您复制了一条种子密钥！',
+                        type: 'success'
+                    });
+
+                    var oInput = document.createElement('input')
+                    oInput.setAttribute('id', 'copy')
+                    oInput.value = row.whisper
+                    document.getElementsByTagName('body')[0].appendChild(oInput)
+
+                    document.getElementById('copy').select()
+                    document.execCommand('Copy')
+                    document.getElementById('copy').remove()
+                },
+            },
+        })
+    </script>
 </body>
 
+<<<<<<< HEAD:target/classes/static/index.html
+</html>
+=======
 <script src="http://luopq.com/demo/lib/jquery-1.10.2.min.js"></script>
 <script src="../../js/paging.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
@@ -85,3 +430,4 @@
 </script>
 
 </html>
+>>>>>>> 4337062f4d947d66fef0137c417ec2d18a50f446:src/main/resources/static/pages/home/home.html

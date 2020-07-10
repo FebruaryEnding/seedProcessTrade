@@ -1,0 +1,14 @@
+
+.card-show {
+    margin: 0 auto 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addMore-form .el-form-item {
+    margin: 0;
+}
