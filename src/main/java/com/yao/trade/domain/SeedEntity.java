@@ -81,6 +81,16 @@ public class SeedEntity {
      */
     private Integer level;
 
+    private Boolean mul;
+
+    public Boolean getMul() {
+        return mul;
+    }
+
+    public void setMul(Boolean mul) {
+        this.mul = mul;
+    }
+
     public Integer getLevel() {
         return level;
     }

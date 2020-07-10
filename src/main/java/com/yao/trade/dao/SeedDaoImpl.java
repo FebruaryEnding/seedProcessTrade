@@ -80,30 +80,32 @@ public class SeedDaoImpl implements ISeedDao {
     }
 
     @Override
+    @Transactional
     public void mulAdd(SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest) {
         List<SeedEntity> list = new ArrayList<>();
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         if (StringUtils.isEmpty(seedRequestDTO.getOperateNumber()) || StringUtils.isEmpty(seedRequestDTO.getRoleName())) {
             throw new RuntimeException("请填写删除密钥和角色名称");
         }
+        seedService.deleteMulByRoleNameAndOperateNumber(seedRequestDTO.getRoleName(), seedRequestDTO.getOperateNumber());
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
         List<SeedMulAddItemRequestDto> add = seedRequestDTO.getAdd();
-        list.addAll(this.toAdd(add, "加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(add, "加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> addLuck = seedRequestDTO.getAddLuck();
-        list.addAll(this.toAdd(add, "幸运加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(addLuck, "幸运加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> removeAndAdd = seedRequestDTO.getRemoveAndAdd();
-        list.addAll(this.toAdd(add, "去加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(removeAndAdd, "去加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> remove = seedRequestDTO.getRemove();
-        list.addAll(this.toAdd(add, "去", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(remove, "去", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         seedService.save(list);
     }
 
     private List<SeedEntity> toAdd(List<SeedMulAddItemRequestDto> requestDto, String name, String realIpAddress, String operateNumber, String roleName,
-    String sellOrBuy , String serverName) {
+                                   String sellOrBuy, String serverName) {
         List<SeedEntity> seeEntities = new ArrayList<>();
         if (!CollectionUtils.isEmpty(requestDto)) {
             for (SeedMulAddItemRequestDto seedMulAddItemRequestDto : requestDto) {
-                if(seedMulAddItemRequestDto.getNumber()!= null && seedMulAddItemRequestDto.getNumber().compareTo(BigDecimal.ONE)>0) {
+                if (seedMulAddItemRequestDto.getNumber() != null && seedMulAddItemRequestDto.getNumber().compareTo(BigDecimal.ZERO) > 0) {
                     SeedEntity seedEntity = new SeedEntity();
                     seedEntity.setCreatedTime(new Date());
                     seedEntity.setIp(realIpAddress);
@@ -113,6 +115,9 @@ public class SeedDaoImpl implements ISeedDao {
                     seedEntity.setSellOrBuy("卖");
                     seedEntity.setPrice(seedMulAddItemRequestDto.getPrice());
                     seedEntity.setUnit(seedMulAddItemRequestDto.getUnit());
+                    seedEntity.setServerName(serverName);
+                    seedEntity.setSellOrBuy(sellOrBuy);
+                    seedEntity.setMul(true);
                     seedEntity.setNumber(seedMulAddItemRequestDto.getNumber());
                     seeEntities.add(seedEntity);
                 }

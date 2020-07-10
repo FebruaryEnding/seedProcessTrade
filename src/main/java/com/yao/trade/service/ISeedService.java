@@ -25,4 +25,6 @@ public interface ISeedService {
     SeedEntity findById(String id);
 
     void deleteById(String id);
+
+    void deleteMulByRoleNameAndOperateNumber(String roleName, String operateNumber);
 }
