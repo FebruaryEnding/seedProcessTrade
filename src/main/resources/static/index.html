@@ -160,8 +160,11 @@
 
             <!-- 分页 -->
             <div class="pagination-box">
-                <el-pagination background @current-change="onPaginationChange" layout="prev, pager, next"
-                    :total="totalCount" :hide-on-single-page="true">
+                <el-pagination background @current-change="onPaginationChange"
+                               layout="prev, pager, next"
+                               :page-sizes="20"
+                               :total="totalCount"
+                               :hide-on-single-page="true">
                 </el-pagination>
             </div>
         </div>
@@ -287,7 +290,7 @@
                         serverName: '',
                         sellOrBuy: '',
                         page: 1,
-                        pageSize: 10
+                        pageSize: 20
                     },
                     ruleForm: {
                         name: '',
