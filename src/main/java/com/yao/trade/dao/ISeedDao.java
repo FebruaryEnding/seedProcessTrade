@@ -1,6 +1,7 @@
 package com.yao.trade.dao;
 
 import com.yao.trade.dao.dto.PageResult;
+import com.yao.trade.dao.dto.SeedMulAddRequestDto;
 import com.yao.trade.dao.dto.SeedQuery;
 import com.yao.trade.dao.dto.SeedRequestDTO;
 
@@ -16,4 +17,6 @@ public interface ISeedDao {
     void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest);
 
     String delete(String id, String operateNumber, HttpServletRequest servletRequest);
+
+    void mulAdd(SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest);
 }

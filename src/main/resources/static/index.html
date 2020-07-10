@@ -139,6 +139,9 @@
                         </template>
                     </el-table-column>
 
+                    <el-table-column prop="number" label="数量">
+                    </el-table-column>
+
                     <el-table-column prop="sellOrBuy" label="买卖">
                     </el-table-column>
 
@@ -239,6 +242,9 @@
                     </el-select>
                 </el-form-item>
 
+                <el-form-item label="数量" prop="number">
+                    <el-input-number style="width: 300px;" v-model="ruleForm.number" :precision="0"></el-input-number>
+                </el-form-item>
                 <el-form-item label="单价/单位">
                     <el-input placeholder="请输入内容" type="number" v-model="ruleForm.price" style="width: 300px;"
                         class="input-with-select">
@@ -285,6 +291,7 @@
                     },
                     ruleForm: {
                         name: '',
+                        number: 1,
                         level: 83,
                         roleName: '',
                         serverName: '国际服',

@@ -37,6 +37,18 @@ public class SeedController {
         return "添加成功";
     }
 
+
+    @ApiOperation("批量添加种子")
+    @PostMapping("/mulAdd")
+    public String mulAddSeed(@RequestBody SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest) {
+        try {
+            seedDao.mulAdd(seedRequestDTO,servletRequest);
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
+        return "添加成功";
+    }
+
     @ApiOperation("添加种子")
     @PostMapping("/one")
     public String addOneSeed(@RequestBody SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {

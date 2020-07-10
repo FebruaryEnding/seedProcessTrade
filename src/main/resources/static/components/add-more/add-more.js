@@ -20,7 +20,20 @@
                         <el-input style="width: 300px;" v-model="model.operateNumber" show-password placeholder="请输入删除密钥(删除操作需要)">
                         </el-input>
                     </el-form-item>
+                    
+                    <el-form-item label="买卖" prop="sellOrBuy">
+                        <el-select style="width: 150px;" v-model="model.sellOrBuy">
+                            <el-option v-for="item in model.saleType" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
 
+                    <el-form-item label="服务器" prop="serverName">
+                        <el-select style="width: 150px;" v-model="model.serverName">
+                            <el-option v-for="item in model.serverType" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-table
                         :data="model.tableData"
                         style="width: 100%;margin-top: 30px;"
@@ -310,13 +323,35 @@
                 // },
                 rules: {
                     roleName: [
-                        { required: true, message: '请输入角色名', trigger: 'blur' }
+                        {required: true, message: '请输入角色名', trigger: 'blur'}
                     ],
                     operateNumber: [
-                        { required: true, message: '请输入删除密钥', trigger: 'blur' }
+                        {required: true, message: '请输入删除密钥', trigger: 'blur'}
                     ],
                 },
                 model: {
+                    serverName: '国服',
+                    serverType: [
+                        {
+                            value: '国际服',
+                            label: '国际服',
+                        },
+                        {
+                            value: '国服',
+                            label: '国服',
+                        },
+                    ],
+                    sellOrBuy: '卖',
+                    saleType: [
+                        {
+                            value: '卖',
+                            label: '卖',
+                        },
+                        {
+                            value: '买',
+                            label: '买',
+                        },
+                    ],
                     roleName: '',
                     operateNumber: '',
                     tableData: [
@@ -325,67 +360,67 @@
                             typeKey: 'remove',
                             bing: {
                                 name: "冰",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             huo: {
                                 name: "火",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             dian: {
                                 name: "电",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             hundun: {
                                 name: "混沌",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             wuli: {
                                 name: "物理",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             gongji: {
                                 name: "攻击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fangyu: {
                                 name: "防御",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fashu: {
                                 name: "法术",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             sudu: {
                                 name: "速度",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             baoji: {
                                 name: "暴击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             slcz: {
                                 name: "势力词缀",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
@@ -395,67 +430,67 @@
                             typeKey: 'add',
                             bing: {
                                 name: "冰",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             huo: {
                                 name: "火",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             dian: {
                                 name: "电",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             hundun: {
                                 name: "混沌",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             wuli: {
                                 name: "物理",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             gongji: {
                                 name: "攻击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fangyu: {
                                 name: "防御",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fashu: {
                                 name: "法术",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             sudu: {
                                 name: "速度",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             baoji: {
                                 name: "暴击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             slcz: {
                                 name: "势力词缀",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
@@ -465,67 +500,67 @@
                             typeKey: 'addLuck',
                             bing: {
                                 name: "冰",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             huo: {
                                 name: "火",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             dian: {
                                 name: "电",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             hundun: {
                                 name: "混沌",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             wuli: {
                                 name: "物理",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             gongji: {
                                 name: "攻击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fangyu: {
                                 name: "防御",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fashu: {
                                 name: "法术",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             sudu: {
                                 name: "速度",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             baoji: {
                                 name: "暴击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             slcz: {
                                 name: "势力词缀",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
@@ -535,67 +570,67 @@
                             typeKey: 'removeAndAdd',
                             bing: {
                                 name: "冰",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             huo: {
                                 name: "火",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             dian: {
                                 name: "电",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             hundun: {
                                 name: "混沌",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             wuli: {
                                 name: "物理",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             gongji: {
                                 name: "攻击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fangyu: {
                                 name: "防御",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             fashu: {
                                 name: "法术",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             sudu: {
                                 name: "速度",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             baoji: {
                                 name: "暴击",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
                             slcz: {
                                 name: "势力词缀",
-                                number: null,
+                                number: 0,
                                 price: 35,
                                 unit: 'c',
                             },
@@ -604,15 +639,19 @@
                 },
             }
         },
-        mounted() { },
+        mounted() {
+        },
         methods: {
-            onVerData() { },
+            onVerData() {
+            },
             onDialogOk() {
                 this.$refs['addMore'].validate(function (valid) {
                     if (valid) {
                         var subData = {
                             roleName: this.model.roleName,
-                            operateNumber: this.model.operateNumber
+                            operateNumber: this.model.operateNumber,
+                            serverName : this.model.serverName,
+                            sellOrBuy:  this.model.sellOrBuy
                         }
 
                         this.model.tableData.forEach(function (item) {

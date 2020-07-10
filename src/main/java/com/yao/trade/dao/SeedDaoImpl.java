@@ -2,10 +2,7 @@ package com.yao.trade.dao;
 
 import com.yao.trade.common.BeanCopyUtils;
 import com.yao.trade.common.IpUtils;
-import com.yao.trade.dao.dto.PageResult;
-import com.yao.trade.dao.dto.SeedQuery;
-import com.yao.trade.dao.dto.SeedRequestDTO;
-import com.yao.trade.dao.dto.SeedResponseDTO;
+import com.yao.trade.dao.dto.*;
 import com.yao.trade.domain.SeedEntity;
 import com.yao.trade.service.ISeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +40,7 @@ public class SeedDaoImpl implements ISeedDao {
             throw new RuntimeException("请等10秒钟后再次添加");
         }
         for (SeedEntity seedEntity : list) {
-            if(StringUtils.isEmpty(seedEntity.getOperateNumber())){
+            if (StringUtils.isEmpty(seedEntity.getOperateNumber())) {
                 throw new RuntimeException("老哥填下删除密钥");
             }
             seedEntity.setIp(realIpAddress);
@@ -53,7 +51,7 @@ public class SeedDaoImpl implements ISeedDao {
 
     @Override
     public void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
-        if(StringUtils.isEmpty(seedRequestDTO.getOperateNumber())){
+        if (StringUtils.isEmpty(seedRequestDTO.getOperateNumber())) {
             throw new RuntimeException("老哥填下删除密钥");
         }
         SeedEntity seedEntity = BeanCopyUtils.copy(seedRequestDTO, SeedEntity.class);
@@ -71,14 +69,56 @@ public class SeedDaoImpl implements ISeedDao {
     @Transactional
     public String delete(String id, String operateNumber, HttpServletRequest servletRequest) {
         SeedEntity seedEntity = seedService.findById(id);
-        if(seedEntity == null){
+        if (seedEntity == null) {
             return "老哥，消息不存在啊";
         }
-        if(!seedEntity.getOperateNumber().equals(operateNumber)){
+        if (!seedEntity.getOperateNumber().equals(operateNumber)) {
             return "老哥，只能删自己的消息，如果自己的消息删不掉请进群反馈";
         }
-        seedService.deleteById( id);
+        seedService.deleteById(id);
         return "删除成功";
+    }
+
+    @Override
+    public void mulAdd(SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest) {
+        List<SeedEntity> list = new ArrayList<>();
+        String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
+        if (StringUtils.isEmpty(seedRequestDTO.getOperateNumber()) || StringUtils.isEmpty(seedRequestDTO.getRoleName())) {
+            throw new RuntimeException("请填写删除密钥和角色名称");
+        }
+        List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
+        List<SeedMulAddItemRequestDto> add = seedRequestDTO.getAdd();
+        list.addAll(this.toAdd(add, "加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        List<SeedMulAddItemRequestDto> addLuck = seedRequestDTO.getAddLuck();
+        list.addAll(this.toAdd(add, "幸运加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        List<SeedMulAddItemRequestDto> removeAndAdd = seedRequestDTO.getRemoveAndAdd();
+        list.addAll(this.toAdd(add, "去加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        List<SeedMulAddItemRequestDto> remove = seedRequestDTO.getRemove();
+        list.addAll(this.toAdd(add, "去", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(),seedRequestDTO.getSellOrBuy(),seedRequestDTO.getServerName()));
+        seedService.save(list);
+    }
+
+    private List<SeedEntity> toAdd(List<SeedMulAddItemRequestDto> requestDto, String name, String realIpAddress, String operateNumber, String roleName,
+    String sellOrBuy , String serverName) {
+        List<SeedEntity> seeEntities = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(requestDto)) {
+            for (SeedMulAddItemRequestDto seedMulAddItemRequestDto : requestDto) {
+                if(seedMulAddItemRequestDto.getNumber()!= null && seedMulAddItemRequestDto.getNumber().compareTo(BigDecimal.ONE)>0) {
+                    SeedEntity seedEntity = new SeedEntity();
+                    seedEntity.setCreatedTime(new Date());
+                    seedEntity.setIp(realIpAddress);
+                    seedEntity.setName(name + seedMulAddItemRequestDto.getName());
+                    seedEntity.setOperateNumber(operateNumber);
+                    seedEntity.setRoleName(roleName);
+                    seedEntity.setSellOrBuy("卖");
+                    seedEntity.setPrice(seedMulAddItemRequestDto.getPrice());
+                    seedEntity.setUnit(seedMulAddItemRequestDto.getUnit());
+                    seedEntity.setNumber(seedMulAddItemRequestDto.getNumber());
+                    seeEntities.add(seedEntity);
+                }
+            }
+        }
+        return seeEntities;
     }
 
 

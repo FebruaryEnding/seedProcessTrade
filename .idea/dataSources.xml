@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="MySQL - seekTrade@118.25.88.251" uuid="d342f6d9-3f71-4ff8-bbe9-dd9b061cb2e1">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://118.25.88.251:3306/seekTrade</jdbc-url>
+    </data-source>
+  </component>
+</project>
