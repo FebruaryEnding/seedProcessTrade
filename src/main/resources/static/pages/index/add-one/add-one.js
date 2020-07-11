@@ -176,10 +176,8 @@
                                 this.dialogLoading = false
                             }.bind(this),
                             success: function (res) {
-                                this.$message({
-                                    message: res,
-                                    type: 'success'
-                                });
+                                
+                                _pub.Notify(this, { title: '成功', message: res })
 
                                 this.onDialogCancel()
 

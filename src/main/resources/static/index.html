@@ -16,6 +16,7 @@
     <script src="http://luopq.com/demo/lib/jquery-1.10.2.min.js"></script>
     <script src="./js/vue.min.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./utils/public.js"></script>
 
     <style>
         * {
@@ -282,10 +283,7 @@
                         contentType: 'application/json',
                         data: JSON.stringify({}),
                         success: function (res) {
-                            this.$message({
-                                message: res,
-                                type: 'success'
-                            });
+                            _pub.Notify(this, { title: '成功', message: res })
 
                             this.onSearch()
                         }.bind(this),
@@ -293,10 +291,8 @@
                     this.dialogDelVisible = false
                 },
                 onCopy(row) {
-                    this.$message({
-                        message: '您复制了一条种植工艺密钥！',
-                        type: 'success'
-                    });
+
+                    _pub.Notify(this, { message: '您复制了一条种植工艺密钥！' })
 
                     var oInput = document.createElement('input')
                     oInput.setAttribute('id', 'copy')
