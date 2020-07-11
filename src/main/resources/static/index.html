@@ -10,7 +10,7 @@
 
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <link rel="stylesheet" href="./components/add-more/add-more.css">
+    <link rel="stylesheet" href="./pages/index/add-more/add-more.css">
 
     <!-- 引入组件库 -->
     <script src="http://luopq.com/demo/lib/jquery-1.10.2.min.js"></script>
@@ -160,14 +160,12 @@
 
             <!-- 分页 -->
             <div class="pagination-box">
-                <el-pagination background @current-change="onPaginationChange"
-                               layout="prev, pager, next"
-                               :page-sizes="20"
-                               :total="totalCount"
-                               :hide-on-single-page="true">
+                <el-pagination background @current-change="onPaginationChange" layout="prev, pager, next"
+                    :page-sizes="20" :total="totalCount" :hide-on-single-page="true">
                 </el-pagination>
             </div>
         </div>
+
         <el-dialog title="删除" :visible="dialogDelVisible" width="500px" @close="onDelDialogCancel">
             <el-input style="width: 300px;" v-model="operateNumber" placeholder="请输入删除密钥"></el-input>
             <span slot="footer" class="dialog-footer">
@@ -177,100 +175,10 @@
         </el-dialog>
 
         <!-- 批量添加 -->
-        <div class="add-more">
-            <!-- 添加预览 -->
-            <!-- <el-card class="card-show">
-                <div slot="header" class="card-header">
-                    <span>添加预览</span>
-                    <div class="card-btns">
-                        <el-button type="primary" @click="onSubmit">提交</el-button>
-                    </div>
-                </div>
-
-                <el-table
-                    :data="showInfo.tableData"
-                    style="width: 100%"
-                    border>
-
-                    <el-table-column
-                    fixed
-                    width="100">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.type}}</span>
-                    </template>
-                    </el-table-column>
-
-                    <el-table-column
-                    width="140" v-for="item in showInfo.tableTitle" :label="titleKey[item]">
-                    <template slot-scope="scope">
-                        <span>{{scope.row[item].number}}（{{scope.row[item].price}}/{{scope.row[item].unit}}）</span>
-                    </template>
-                    </el-table-column>
-
-                </el-table>
-            </el-card> -->
-        </div>
+        <div class="add-more"></div>
 
         <!-- 单个添加 -->
-        <el-dialog title="添加种植工艺" :visible="dialogVisible" width="500px" @close="onDialogCancel">
-            <el-form :model="ruleForm" label-width="100px">
-
-                <el-form-item label="种植工艺" prop="name">
-                    <el-select v-model="ruleForm.name" style="width: 300px;" filterable placeholder="搜索种植工艺名称">
-                        <el-option style="width: 600px;" v-for="item in nameList" :key="item.value" :label="item.value"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="等级" prop="level">
-                    <el-input-number style="width: 300px;" v-model="ruleForm.level" :precision="0"></el-input-number>
-                </el-form-item>
-
-                <el-form-item label="角色名" prop="roleName">
-                    <el-input style="width: 300px;" v-model="ruleForm.roleName" placeholder="请输入角色名"></el-input>
-                </el-form-item>
-
-                <el-form-item label="服务器" prop="serverName">
-                    <el-select style="width: 300px;" v-model="ruleForm.serverName">
-                        <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="买卖" prop="sellOrBuy">
-                    <el-select style="width: 300px;" v-model="ruleForm.sellOrBuy">
-                        <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="数量" prop="number">
-                    <el-input-number style="width: 300px;" v-model="ruleForm.number" :precision="0"></el-input-number>
-                </el-form-item>
-                <el-form-item label="单价/单位">
-                    <el-input placeholder="请输入内容" type="number" v-model="ruleForm.price" style="width: 300px;"
-                        class="input-with-select">
-                        <el-select style="width: 80px;" v-model="ruleForm.unit" slot="append">
-                            <el-option v-for="item in unitType" :key="item.value" :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item label="删除密钥" prop="operateNumber">
-                    <el-input style="width: 300px;" v-model="ruleForm.operateNumber" placeholder="请输入删除密钥(删除操作需要)">
-                    </el-input>
-                </el-form-item>
-
-            </el-form>
-
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="onDialogCancel">取 消</el-button>
-                <el-button type="primary" :loading="dialogLoading" @click="onDialogOk">确 定</el-button>
-            </span>
-        </el-dialog>
+        <div class="add-one"></div>
     </div>
 
     <footer>
@@ -292,20 +200,8 @@
                         page: 1,
                         pageSize: 20
                     },
-                    ruleForm: {
-                        name: '',
-                        number: 1,
-                        level: 83,
-                        roleName: '',
-                        serverName: '国际服',
-                        sellOrBuy: '卖',
-                        price: 1,
-                        unit: 'c',
-                        operateNumber: '',
-                    },
                     operateNumber: '',
                     dialogDelVisible: false,
-                    dialogVisible: false,
                     dialogLoading: false,
                     anno: '',
                     totalCount: 0,
@@ -331,16 +227,6 @@
                             label: '买',
                         },
                     ],
-                    unitType: [
-                        {
-                            value: 'c',
-                            label: 'c',
-                        },
-                        {
-                            value: 'e',
-                            label: 'e',
-                        },
-                    ],
                     delRow: {},
                 }
             },
@@ -350,19 +236,11 @@
 
                 // 获取公告
                 this.getAnno()
-
-                // 获取种植工艺列表
-                this.getNameList()
             },
             methods: {
                 showDel(row) {
                     this.dialogDelVisible = true;
                     this.delRow = row;
-                },
-                getNameList() {
-                    $.get('/seedTrade/seed/affix', {}, function (res) {
-                        this.nameList = res
-                    }.bind(this))
                 },
                 getList() {
                     $.get('/seedTrade/seed', this.searchInfo, function (res) {
@@ -390,41 +268,10 @@
                     _addMore.show()
                 },
                 onOneAdd() {
-                    this.dialogVisible = !this.dialogVisible
-                },
-                onDialogCancel() {
-                    this.dialogVisible = false
+                    _addOne.show()
                 },
                 onDelDialogCancel() {
                     this.dialogDelVisible = false
-                },
-                onDialogOk() {
-                    if (!this.ruleForm.operateNumber) {
-                        this.$message({
-                            message: '请输入删除密钥',
-                            type: 'error'
-                        });
-                        return;
-                    }
-
-                    this.dialogLoading = true
-                    $.ajax({
-                        type: 'post',
-                        url: '/seedTrade/seed',
-                        contentType: 'application/json',
-                        data: JSON.stringify([this.ruleForm]),
-                        complete: function (data) {
-                            this.dialogLoading = false
-                        }.bind(this),
-                        success: function (res) {
-                            this.$message({
-                                message: res,
-                                type: 'success'
-                            });
-                            this.onDialogCancel()
-                            this.onSearch()
-                        }.bind(this),
-                    })
                 },
                 onDel() {
                     let row = this.delRow;
@@ -464,7 +311,8 @@
         })
     </script>
 
-    <script src="./components/add-more/add-more.js"></script>
+    <script src="./pages/index/add-more/add-more.js"></script>
+    <script src="./pages/index/add-one/add-one.js"></script>
 
 </body>
 
