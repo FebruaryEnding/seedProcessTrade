@@ -152,7 +152,7 @@
                     <el-table-column fixed="right" label="操作" width="100">
                         <template slot-scope="scope">
                             <el-button @click="onCopy(scope.row)" type="text" size="small">copy</el-button>
-                            <el-button @click="showDel(scope.row)" type="text" size="small">del</el-button>
+                            <el-button @click="onDel(scope.row)" type="text" size="small">del</el-button>
                         </template>
                     </el-table-column>
 
@@ -167,13 +167,8 @@
             </div>
         </div>
 
-        <el-dialog title="删除" :visible="dialogDelVisible" width="500px" @close="onDelDialogCancel">
-            <el-input style="width: 300px;" v-model="operateNumber" placeholder="请输入删除密钥"></el-input>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="onDelDialogCancel">取 消</el-button>
-                <el-button type="primary" :loading="dialogLoading" @click="onDel">确 定</el-button>
-            </span>
-        </el-dialog>
+        <!-- 删除 -->
+        <div class="del-dialog"></div>
 
         <!-- 批量添加 -->
         <div class="add-more"></div>
@@ -201,9 +196,6 @@
                         page: 1,
                         pageSize: 20
                     },
-                    operateNumber: '',
-                    dialogDelVisible: false,
-                    dialogLoading: false,
                     anno: '',
                     totalCount: 0,
                     dataList: [],
@@ -228,7 +220,6 @@
                             label: '买',
                         },
                     ],
-                    delRow: {},
                 }
             },
             mounted() {
@@ -239,10 +230,6 @@
                 this.getAnno()
             },
             methods: {
-                showDel(row) {
-                    this.dialogDelVisible = true;
-                    this.delRow = row;
-                },
                 getList() {
                     $.get('/seedTrade/seed', this.searchInfo, function (res) {
                         this.dataList = res.rows
@@ -265,30 +252,14 @@
 
                     this.getList()
                 },
+                onDel(row) {
+                    _delDialog.show(row.id)
+                },
                 onMoreAdd() {
                     _addMore.show()
                 },
                 onOneAdd() {
                     _addOne.show()
-                },
-                onDelDialogCancel() {
-                    this.dialogDelVisible = false
-                },
-                onDel() {
-                    let row = this.delRow;
-                    let operateNum = this.operateNumber;
-                    $.ajax({
-                        type: 'delete',
-                        url: `/seedTrade/seed/${row.id}/` + operateNum,
-                        contentType: 'application/json',
-                        data: JSON.stringify({}),
-                        success: function (res) {
-                            _pub.Notify(this, { title: '成功', message: res })
-
-                            this.onSearch()
-                        }.bind(this),
-                    });
-                    this.dialogDelVisible = false
                 },
                 onCopy(row) {
 
@@ -307,6 +278,7 @@
         })
     </script>
 
+    <script src="./pages/index/del-dialog/del-dialog.js"></script>
     <script src="./pages/index/add-more/add-more.js"></script>
     <script src="./pages/index/add-one/add-one.js"></script>
 

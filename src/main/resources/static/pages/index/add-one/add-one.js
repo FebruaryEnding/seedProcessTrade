@@ -161,6 +161,8 @@
                 }.bind(this))
             },
             onDialogCancel() {
+                this.$refs['addOne'].resetFields()
+
                 this.dialogVisible = false
             },
             onDialogOk() {
