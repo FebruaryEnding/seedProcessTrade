@@ -17,6 +17,7 @@
     <script src="./js/vue.min.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="./utils/public.js"></script>
+    <script src="./utils/ajax.js"></script>
     <script src="./utils/localStorage.js"></script>
 
     <style>
@@ -232,16 +233,20 @@
             },
             methods: {
                 getList() {
-                    $.get('/seedTrade/seed', this.searchInfo, function (res) {
-                        this.dataList = res.rows
+                    _ajax.GET(`/seed`, this.searchInfo, {
+                        success: function (res) {
+                            this.dataList = res.rows
 
-                        this.totalCount = res.totalCount
-                    }.bind(this))
+                            this.totalCount = res.totalCount
+                        }.bind(this)
+                    })
                 },
                 getAnno() {
-                    $.get('/seedTrade/seed/anno', {}, function (res) {
-                        this.anno = res
-                    }.bind(this))
+                    _ajax.GET(`/seed/anno`, {}, {
+                        success: function (res) {
+                            this.anno = res
+                        }.bind(this)
+                    })
                 },
                 onPaginationChange(val) {
                     this.searchInfo.page = val

@@ -323,41 +323,6 @@
                 dialogVisible: false,
                 dialogLoading: false,
                 unitList: ['c', 'e'],
-                titleKey: {
-                    bing: '冰',
-                    huo: '火',
-                },
-                // showInfo: {
-                //     tableTitle: ['bing', 'huo'],
-                //     tableData: [
-                //         {
-                //             type: '去',
-                //             bing: {
-                //                 number: 20,
-                //                 price: 35,
-                //                 unit: 'c',
-                //             },
-                //             huo: {
-                //                 number: 24,
-                //                 price: 32,
-                //                 unit: 'c',
-                //             },
-                //         },
-                //         {
-                //             type: '加',
-                //             bing: {
-                //                 number: 20,
-                //                 price: 35,
-                //                 unit: 'c',
-                //             },
-                //             huo: {
-                //                 number: 24,
-                //                 price: 32,
-                //                 unit: 'c',
-                //             },
-                //         },
-                //     ],
-                // },
                 model: {
                     rules: {
                         roleName: [
@@ -708,24 +673,21 @@
                         })
 
                         this.dialogLoading = true
-                        $.ajax({
-                            type: 'post',
-                            url: '/seedTrade/seed/mulAdd',
-                            contentType: 'application/json',
-                            data: JSON.stringify(subData),
-                            complete: function (data) {
+
+                        _ajax.POST(`/seed/mulAdd`, subData, {
+                            complete: function () {
                                 this.dialogLoading = false
                             }.bind(this),
                             success: function (res) {
 
-                                _pub.Notify(this, { title: '成功', message: res })
+                                _pub.Notify(this, { title: '多选添加', message: res })
 
                                 _loacalStorage.set('baseInfo', { roleName: this.model.roleName, operateNumber: this.model.operateNumber })
 
                                 this.onDialogCancel()
 
                                 _wrapper.onSearch()
-                            }.bind(this),
+                            }.bind(this)
                         })
                     }
                 }.bind(this));

@@ -60,22 +60,19 @@
 
                         this.dialogLoading = true
 
-                        $.ajax({
-                            type: 'delete',
-                            url: `/seedTrade/seed/${this.delId}/${this.model.dataInfo.operateNumber}`,
-                            contentType: 'application/json',
-                            data: null,
-                            complete: function (data) {
+                        _ajax.DELETE(`/seed/${this.delId}/${this.model.dataInfo.operateNumber}`, {}, {
+                            complete: function () {
                                 this.dialogLoading = false
                             }.bind(this),
+
                             success: function (res) {
-                                _pub.Notify(this, { title: '成功', message: res })
+                                _pub.Notify(this, { title: '删除', message: res })
 
                                 this.onDialogCancel()
 
                                 _wrapper.onSearch()
-                            }.bind(this),
-                        });
+                            }.bind(this)
+                        })
                     }
                 }.bind(this))
             },

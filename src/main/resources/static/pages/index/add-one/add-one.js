@@ -160,9 +160,11 @@
             getNameList() {
                 if (this.nameList.length) return
 
-                $.get('/seedTrade/seed/affix', {}, function (res) {
-                    this.nameList = res
-                }.bind(this))
+                _ajax.GET(`/seed/affix`, {}, {
+                    success: function (res) {
+                        this.nameList = res
+                    }.bind(this)
+                })
             },
             onDialogCancel() {
                 this.$refs['addOne'].resetFields()
@@ -175,24 +177,21 @@
                         var dataInfo = this.model.dataInfo
 
                         this.dialogLoading = true
-                        $.ajax({
-                            type: 'post',
-                            url: '/seedTrade/seed',
-                            contentType: 'application/json',
-                            data: JSON.stringify([dataInfo]),
-                            complete: function (data) {
+
+                        _ajax.POST(`/seed`, [dataInfo], {
+                            complete: function () {
                                 this.dialogLoading = false
                             }.bind(this),
-                            success: function (res) {
 
-                                _pub.Notify(this, { title: '成功', message: res })
+                            success: function (res) {
+                                _pub.Notify(this, { title: '单个添加', message: res })
 
                                 _loacalStorage.set('baseInfo', { roleName: dataInfo.roleName, operateNumber: dataInfo.operateNumber })
 
                                 this.onDialogCancel()
 
                                 _wrapper.onSearch()
-                            }.bind(this),
+                            }.bind(this)
                         })
                     }
                 }.bind(this))
