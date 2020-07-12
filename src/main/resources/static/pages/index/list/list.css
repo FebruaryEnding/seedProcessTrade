@@ -1,0 +1,27 @@
+.search-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.search-con {
+    display: flex;
+}
+
+.search-con .search-input {
+    width: 200px;
+}
+
+.search-con .search-item:not(:last-child) {
+    margin-right: 10px;
+}
+
+.pagination-box {
+    display: flex;
+    justify-content: center;
+    margin: 10px auto 0;
+}
+
+.list-box .el-table td {
+    padding: 4px 0;
+}

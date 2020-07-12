@@ -70,7 +70,7 @@
 
                                 this.onDialogCancel()
 
-                                _wrapper.onSearch()
+                                _list.render()
                             }.bind(this)
                         })
                     }
