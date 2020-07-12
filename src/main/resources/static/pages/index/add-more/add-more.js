@@ -2,6 +2,10 @@
 
     owner.show = function () {
         vm.dialogVisible = true
+
+        var baseInfo = _loacalStorage.get('baseInfo')
+        vm.model.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
+        vm.model.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
     }
 
     var template =
@@ -715,6 +719,8 @@
                             success: function (res) {
 
                                 _pub.Notify(this, { title: '成功', message: res })
+
+                                _loacalStorage.set('baseInfo', { roleName: this.model.roleName, operateNumber: this.model.operateNumber })
 
                                 this.onDialogCancel()
 

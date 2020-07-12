@@ -10,5 +10,19 @@
         });
     }
 
+    onwer.GetObjProperty = function (obj, name, returnVal) {
+        returnVal = returnVal || ''
+        var val = obj ? (obj.hasOwnProperty(name) ? obj[name] : returnVal) : returnVal
+        return (val || val === 0) ? val : returnVal
+    };
+
+    onwer.IsArray = function (arr) {
+        return Array.isArray(arr) ? arr : [];
+    };
+
+    onwer.Trim = function (str) {
+        return (str === null) ? str : str.replace(/(^\s*)|(\s*$)/g, "");
+    };
+
 
 })(window._pub = {})

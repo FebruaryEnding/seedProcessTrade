@@ -3,6 +3,10 @@
     owner.show = function () {
         vm.dialogVisible = true
 
+        var baseInfo = _loacalStorage.get('baseInfo')
+        vm.model.dataInfo.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
+        vm.model.dataInfo.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
+
         // 获取种植工艺列表
         vm.getNameList()
     }
@@ -168,18 +172,22 @@
             onDialogOk() {
                 this.$refs['addOne'].validate(function (valid) {
                     if (valid) {
+                        var dataInfo = this.model.dataInfo
+
                         this.dialogLoading = true
                         $.ajax({
                             type: 'post',
                             url: '/seedTrade/seed',
                             contentType: 'application/json',
-                            data: JSON.stringify([this.model.dataInfo]),
+                            data: JSON.stringify([dataInfo]),
                             complete: function (data) {
                                 this.dialogLoading = false
                             }.bind(this),
                             success: function (res) {
-                                
+
                                 _pub.Notify(this, { title: '成功', message: res })
+
+                                _loacalStorage.set('baseInfo', { roleName: dataInfo.roleName, operateNumber: dataInfo.operateNumber })
 
                                 this.onDialogCancel()
 

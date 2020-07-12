@@ -4,6 +4,9 @@
         vm.dialogVisible = true
 
         vm.delId = delId
+
+        var baseInfo = _loacalStorage.get('baseInfo')
+        vm.model.dataInfo.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
     }
 
     var template =
