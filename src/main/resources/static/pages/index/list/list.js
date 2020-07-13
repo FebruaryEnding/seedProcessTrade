@@ -82,8 +82,15 @@
 
                 <!-- 分页 -->
                 <div class="pagination-box">
-                    <el-pagination background @current-change="onPaginationChange" layout="prev, pager, next"
-                        :page-sizes="20" :total="totalCount" :hide-on-single-page="true">
+                    <el-pagination 
+                        background 
+                        @size-change="onHandleSizeChange"
+                        @current-change="onPaginationChange" 
+                        :layout="pagination.layout"
+                        :page-sizes="pagination.pageSizes"
+                        :page-size="pagination.pageSize"
+                        :total="pagination.totalCount"
+                        :hide-on-single-page="true">
                     </el-pagination>
                 </div>
             </div>
@@ -98,10 +105,14 @@
                     keyValue: '',
                     serverName: '',
                     sellOrBuy: '',
-                    page: 1,
-                    pageSize: 20
                 },
-                totalCount: 0,
+                pagination: {
+                    page: 1,
+                    pageSizes: [10, 20, 50, 100],
+                    pageSize: 10,
+                    totalCount: 0,
+                    layout: "total, sizes, prev, pager, next, jumper",
+                },
                 dataList: [],
                 nameList: [],
                 serverType: [
@@ -132,21 +143,30 @@
         },
         methods: {
             getList() {
-                _ajax.GET(`/seed`, this.searchInfo, {
+                var searchInfo = this.searchInfo
+                searchInfo.page = this.pagination.page
+                searchInfo.pageSize = this.pagination.pageSize
+
+                _ajax.GET(`/seed`, searchInfo, {
                     success: function (res) {
                         this.dataList = res.rows
 
-                        this.totalCount = res.totalCount
+                        this.pagination.totalCount = res.totalCount
                     }.bind(this)
                 })
             },
+            onHandleSizeChange(val) {
+                this.pagination.pageSize = val
+
+                this.getList()
+            },
             onPaginationChange(val) {
-                this.searchInfo.page = val
+                this.pagination.page = val
 
                 this.getList()
             },
             onSearch() {
-                this.searchInfo.page = 1
+                this.pagination.page = 1
 
                 this.getList()
             },
