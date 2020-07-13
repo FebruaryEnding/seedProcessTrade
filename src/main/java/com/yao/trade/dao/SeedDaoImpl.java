@@ -2,6 +2,7 @@ package com.yao.trade.dao;
 
 import com.yao.trade.common.BeanCopyUtils;
 import com.yao.trade.common.IpUtils;
+import com.yao.trade.common.PageResult;
 import com.yao.trade.dao.dto.*;
 import com.yao.trade.domain.SeedEntity;
 import com.yao.trade.service.ISeedService;

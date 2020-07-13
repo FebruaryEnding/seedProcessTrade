@@ -1,4 +1,4 @@
-package com.yao.trade.dao.dto;
+package com.yao.trade.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;

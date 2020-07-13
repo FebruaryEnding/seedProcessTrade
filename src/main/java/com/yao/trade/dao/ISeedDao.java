@@ -1,6 +1,6 @@
 package com.yao.trade.dao;
 
-import com.yao.trade.dao.dto.PageResult;
+import com.yao.trade.common.PageResult;
 import com.yao.trade.dao.dto.SeedMulAddRequestDto;
 import com.yao.trade.dao.dto.SeedQuery;
 import com.yao.trade.dao.dto.SeedRequestDTO;

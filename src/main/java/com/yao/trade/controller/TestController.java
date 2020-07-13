@@ -16,4 +16,10 @@ public class TestController {
     public String test() {
         return "测试";
     }
+
+    @ApiOperation("测试getError")
+    @GetMapping("/error")
+    public String error() {
+        throw  new RuntimeException("--");
+    }
 }

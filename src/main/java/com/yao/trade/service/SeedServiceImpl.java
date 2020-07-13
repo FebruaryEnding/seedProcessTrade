@@ -1,6 +1,6 @@
 package com.yao.trade.service;
 
-import com.yao.trade.dao.dto.PageResult;
+import com.yao.trade.common.PageResult;
 import com.yao.trade.domain.SeedEntity;
 import com.yao.trade.domain.SeedRepository;
 import org.springframework.beans.factory.annotation.Autowired;

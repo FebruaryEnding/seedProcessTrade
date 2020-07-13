@@ -1,5 +1,7 @@
 package com.yao.trade.controller;
 
+import com.yao.trade.common.PageResult;
+import com.yao.trade.common.Result;
 import com.yao.trade.dao.ISeedAffixDao;
 import com.yao.trade.dao.ISeedDao;
 import com.yao.trade.dao.dto.*;
@@ -28,36 +30,23 @@ public class SeedController {
 
     @ApiOperation("添加种子")
     @PostMapping
-    public String addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO, HttpServletRequest servletRequest) {
-        try {
-            seedDao.save(seedRequestDTO,servletRequest);
-        }catch (RuntimeException e){
-            return e.getMessage();
-        }
-        return "添加成功";
+    public Result addSeed(@RequestBody List<SeedRequestDTO> seedRequestDTO, HttpServletRequest servletRequest) {
+        seedDao.save(seedRequestDTO, servletRequest);
+        return new Result.Builder().data(null).msg("添加成功").success(true).build();
     }
-
 
     @ApiOperation("批量添加种子")
     @PostMapping("/mulAdd")
-    public String mulAddSeed(@RequestBody SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest) {
-        try {
-            seedDao.mulAdd(seedRequestDTO,servletRequest);
-        }catch (RuntimeException e){
-            return e.getMessage();
-        }
-        return "添加成功";
+    public Result mulAddSeed(@RequestBody SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest) {
+        seedDao.mulAdd(seedRequestDTO, servletRequest);
+        return new Result.Builder().data(null).msg("添加成功").success(true).build();
     }
 
     @ApiOperation("添加种子")
     @PostMapping("/one")
-    public String addOneSeed(@RequestBody SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
-        try {
-            seedDao.saveOne(seedRequestDTO,servletRequest);
-        }catch (RuntimeException e){
-            return e.getMessage();
-        }
-        return "添加成功";
+    public Result addOneSeed(@RequestBody SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
+        seedDao.saveOne(seedRequestDTO, servletRequest);
+        return new Result.Builder().data(null).msg("添加成功").success(true).build();
     }
 
     @ApiOperation("查询种子")
@@ -69,22 +58,23 @@ public class SeedController {
 
     @ApiOperation("查询种子词缀")
     @GetMapping("/affix")
-    public List<AffixResponseDTO> findAll(){
-         AffixQuery query =new  AffixQuery();
-        return  affixDao.findAll(query);
+    public Result findAll() {
+        AffixQuery query = new AffixQuery();
+        List<AffixResponseDTO> all = affixDao.findAll(query);
+        return new Result.Builder().data(all).msg("查询成功").success(true).build();
     }
 
 
     @ApiOperation("查询公告")
     @GetMapping("/anno")
-    public String getAnno(){
+    public String getAnno() {
         return annoService.getAnno();
     }
 
     @ApiOperation("删除")
     @DeleteMapping("/{id}/{operateNumber}")
-    public String delete(@PathVariable("id")String id,@PathVariable("operateNumber")String operateNumber ,HttpServletRequest servletRequest){
-        String result= seedDao.delete(id,operateNumber,servletRequest);
-        return result;
+    public Result delete(@PathVariable("id") String id, @PathVariable("operateNumber") String operateNumber, HttpServletRequest servletRequest) {
+        String result = seedDao.delete(id, operateNumber, servletRequest);
+        return new Result.Builder().msg(result).success(true).build();
     }
 }
