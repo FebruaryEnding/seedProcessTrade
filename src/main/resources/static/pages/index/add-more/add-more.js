@@ -2,6 +2,10 @@
 
     owner.show = function () {
         vm.dialogVisible = true
+
+        var baseInfo = _loacalStorage.get('baseInfo')
+        vm.model.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
+        vm.model.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
     }
 
     var template =
@@ -10,7 +14,7 @@
             <el-dialog title="批量添加" :visible="dialogVisible" width="90%" @close="onDialogCancel">
 
                 <!-- 添加 -->
-                <el-form class="addMore-form" :model="model" :rules="rules" :inline="true" ref="addMore" label-width="100px">
+                <el-form class="addMore-form" :model="model" :rules="model.rules" :inline="true" ref="addMore" label-width="100px">
 
                     <el-form-item label="角色名" prop="roleName">
                         <el-input style="width: 300px;" v-model="model.roleName" placeholder="请输入角色名"></el-input>
@@ -52,9 +56,12 @@
                         label="冰"
                         width="300">
                         <template slot-scope="scope">
-                            <el-form-item>
-                                <el-input style="width: 100px" type="number" v-model="scope.row.bing.number" placeholder="数量" @blur="onVerData"></el-input>
-                                <el-input style="width: 160px;" type="number" v-model="scope.row.bing.price" placeholder="价格" @blur="onVerData">
+                            <el-form-item :prop="'tableData.' + scope.$index + '.bing.number'" :rules='model.rules.number'>
+                                <el-input style="width: 100px" type="number" v-model="scope.row.bing.number" placeholder="数量"></el-input>
+                            </el-form-item>
+
+                            <el-form-item :prop="'tableData.' + scope.$index + '.bing.price'" :rules='model.rules.price'>
+                                <el-input style="width: 160px;" type="number" v-model="scope.row.bing.price" placeholder="价格">
                                     <el-select style="width: 60px" slot="append" v-model="scope.row.bing.unit">
                                         <el-option
                                         v-for="item in unitList"
@@ -72,9 +79,12 @@
                         label="火"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.huo.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.huo.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.huo.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.huo.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.huo.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.huo.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.huo.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -92,9 +102,12 @@
                         label="电"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.dian.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.dian.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.dian.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.dian.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.dian.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.dian.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.dian.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -112,9 +125,12 @@
                         label="混沌"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.hundun.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.hundun.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.hundun.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.hundun.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.hundun.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.hundun.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.hundun.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -132,9 +148,12 @@
                         label="物理"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.wuli.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.wuli.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.wuli.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.wuli.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.wuli.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.wuli.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.wuli.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -152,9 +171,12 @@
                         label="攻击"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.gongji.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.gongji.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.gongji.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.gongji.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.gongji.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.gongji.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.gongji.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -172,9 +194,12 @@
                         label="防御"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.fangyu.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.fangyu.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.fangyu.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.fangyu.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.fangyu.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.fangyu.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.fangyu.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -192,9 +217,12 @@
                         label="法术"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.fashu.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.fashu.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.fashu.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.fashu.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.fashu.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.fashu.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.fashu.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -212,9 +240,12 @@
                         label="速度"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.sudu.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.sudu.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.sudu.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.sudu.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.sudu.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.sudu.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.sudu.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -232,9 +263,12 @@
                         label="暴击"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.baoji.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.baoji.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.baoji.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.baoji.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.baoji.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.baoji.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.baoji.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -252,9 +286,12 @@
                         label="势力词缀"
                         width="300">
                         <template slot-scope="scope">
-                        <el-form-item>
-                        <el-input style="width: 100px" type="number" v-model="scope.row.slcz.number" placeholder="数量" @blur="onVerData"></el-input>
-                        <el-input style="width: 160px;" type="number" v-model="scope.row.slcz.price" placeholder="价格" @blur="onVerData">
+                        <el-form-item :prop="'tableData.' + scope.$index + '.slcz.number'" :rules='model.rules.number'>
+                        <el-input style="width: 100px" type="number" v-model="scope.row.slcz.number" placeholder="数量"></el-input>
+                        </el-form-item>
+
+                        <el-form-item :prop="'tableData.' + scope.$index + '.slcz.price'" :rules='model.rules.price'>
+                        <el-input style="width: 160px;" type="number" v-model="scope.row.slcz.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.slcz.unit">
                                 <el-option
                                 v-for="item in unitList"
@@ -286,50 +323,23 @@
                 dialogVisible: false,
                 dialogLoading: false,
                 unitList: ['c', 'e'],
-                titleKey: {
-                    bing: '冰',
-                    huo: '火',
-                },
-                // showInfo: {
-                //     tableTitle: ['bing', 'huo'],
-                //     tableData: [
-                //         {
-                //             type: '去',
-                //             bing: {
-                //                 number: 20,
-                //                 price: 35,
-                //                 unit: 'c',
-                //             },
-                //             huo: {
-                //                 number: 24,
-                //                 price: 32,
-                //                 unit: 'c',
-                //             },
-                //         },
-                //         {
-                //             type: '加',
-                //             bing: {
-                //                 number: 20,
-                //                 price: 35,
-                //                 unit: 'c',
-                //             },
-                //             huo: {
-                //                 number: 24,
-                //                 price: 32,
-                //                 unit: 'c',
-                //             },
-                //         },
-                //     ],
-                // },
-                rules: {
-                    roleName: [
-                        {required: true, message: '请输入角色名', trigger: 'blur'}
-                    ],
-                    operateNumber: [
-                        {required: true, message: '请输入删除密钥', trigger: 'blur'}
-                    ],
-                },
                 model: {
+                    rules: {
+                        roleName: [
+                            { required: true, message: '请输入角色名', trigger: 'change' }
+                        ],
+                        operateNumber: [
+                            { required: true, message: '请输入删除密钥', trigger: 'change' }
+                        ],
+                        number: [
+                            { required: true, message: '', trigger: 'change' },
+                            { pattern: /^(0|\+?[1-9][0-9]*)$/, message: '', trigger: 'change' }
+                        ],
+                        price: [
+                            { required: true, message: '', trigger: 'change' },
+                            { pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, message: '', trigger: 'change' }
+                        ],
+                    },
                     serverName: '国服',
                     serverType: [
                         {
@@ -639,19 +649,15 @@
                 },
             }
         },
-        mounted() {
-        },
         methods: {
-            onVerData() {
-            },
             onDialogOk() {
                 this.$refs['addMore'].validate(function (valid) {
                     if (valid) {
                         var subData = {
                             roleName: this.model.roleName,
                             operateNumber: this.model.operateNumber,
-                            serverName : this.model.serverName,
-                            sellOrBuy:  this.model.sellOrBuy
+                            serverName: this.model.serverName,
+                            sellOrBuy: this.model.sellOrBuy
                         }
 
                         this.model.tableData.forEach(function (item) {
@@ -667,22 +673,21 @@
                         })
 
                         this.dialogLoading = true
-                        $.ajax({
-                            type: 'post',
-                            url: '/seedTrade/seed/mulAdd',
-                            contentType: 'application/json',
-                            data: JSON.stringify(subData),
-                            complete: function (data) {
+
+                        _ajax.POST(`/seed/mulAdd`, subData, {
+                            complete: function () {
                                 this.dialogLoading = false
                             }.bind(this),
                             success: function (res) {
-                                this.$message({
-                                    message: res,
-                                    type: 'success'
-                                });
+
+                                _pub.Notify(this, { title: '多选添加', message: res })
+
+                                _loacalStorage.set('baseInfo', { roleName: this.model.roleName, operateNumber: this.model.operateNumber })
+
                                 this.onDialogCancel()
-                                _wrapper.onSearch()
-                            }.bind(this),
+
+                                _list.render()
+                            }.bind(this)
                         })
                     }
                 }.bind(this));
