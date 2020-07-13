@@ -85,36 +85,9 @@
                 dialogVisible: false,
                 dialogLoading: false,
                 nameList: [],
-                serverType: [
-                    {
-                        value: '国际服',
-                        label: '国际服',
-                    },
-                    {
-                        value: '国服',
-                        label: '国服',
-                    },
-                ],
-                saleType: [
-                    {
-                        value: '卖',
-                        label: '卖',
-                    },
-                    {
-                        value: '买',
-                        label: '买',
-                    },
-                ],
-                unitType: [
-                    {
-                        value: 'c',
-                        label: 'c',
-                    },
-                    {
-                        value: 'e',
-                        label: 'e',
-                    },
-                ],
+                serverType: _dataDic.get('serverType'),
+                saleType: _dataDic.get('saleType'),
+                unitType: _dataDic.get('unitType'),
                 model: {
                     rules: {
                         name: [
@@ -150,9 +123,6 @@
                         unit: 'c',
                         operateNumber: '',
                     },
-                },
-                ruleForm: {
-
                 },
             }
         },
