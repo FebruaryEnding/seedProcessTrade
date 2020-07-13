@@ -27,14 +27,14 @@
                     
                     <el-form-item label="买卖" prop="sellOrBuy">
                         <el-select style="width: 150px;" v-model="model.sellOrBuy">
-                            <el-option v-for="item in model.saleType" :key="item.value" :label="item.label" :value="item.value">
+                            <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
 
                     <el-form-item label="服务器" prop="serverName">
                         <el-select style="width: 150px;" v-model="model.serverName">
-                            <el-option v-for="item in model.serverType" :key="item.value" :label="item.label" :value="item.value">
+                            <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -64,10 +64,10 @@
                                 <el-input style="width: 160px;" type="number" v-model="scope.row.bing.price" placeholder="价格">
                                     <el-select style="width: 60px" slot="append" v-model="scope.row.bing.unit">
                                         <el-option
-                                        v-for="item in unitList"
-                                        :key="item"
-                                        :label="item"
-                                        :value="item">
+                                        v-for="item in unitType"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
                                         </el-option>
                                     </el-select>
                                 </el-input>
@@ -87,10 +87,10 @@
                         <el-input style="width: 160px;" type="number" v-model="scope.row.huo.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.huo.unit">
                                 <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
+                                v-for="item in unitType"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
                                 </el-option>
                             </el-select>
                         </el-input>
@@ -109,12 +109,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.dian.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.dian.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.dian.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -132,12 +132,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.hundun.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.hundun.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.hundun.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -155,12 +155,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.wuli.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.wuli.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.wuli.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -178,12 +178,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.gongji.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.gongji.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.gongji.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -201,12 +201,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.fangyu.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.fangyu.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.fangyu.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -224,12 +224,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.fashu.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.fashu.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.fashu.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -247,12 +247,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.sudu.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.sudu.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.sudu.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -270,12 +270,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.baoji.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.baoji.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.baoji.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -293,12 +293,12 @@
                         <el-form-item :prop="'tableData.' + scope.$index + '.slcz.price'" :rules='model.rules.price'>
                         <el-input style="width: 160px;" type="number" v-model="scope.row.slcz.price" placeholder="价格">
                             <el-select style="width: 60px" slot="append" v-model="scope.row.slcz.unit">
-                                <el-option
-                                v-for="item in unitList"
-                                :key="item"
-                                :label="item"
-                                :value="item">
-                                </el-option>
+                            <el-option
+                            v-for="item in unitType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                             </el-select>
                         </el-input>
                     </el-form-item>
@@ -322,7 +322,9 @@
             return {
                 dialogVisible: false,
                 dialogLoading: false,
-                unitList: ['c', 'e'],
+                serverType: _dataDic.get('serverType'),
+                saleType: _dataDic.get('saleType'),
+                unitType: _dataDic.get('unitType'),
                 model: {
                     rules: {
                         roleName: [
@@ -341,27 +343,7 @@
                         ],
                     },
                     serverName: '国服',
-                    serverType: [
-                        {
-                            value: '国际服',
-                            label: '国际服',
-                        },
-                        {
-                            value: '国服',
-                            label: '国服',
-                        },
-                    ],
                     sellOrBuy: '卖',
-                    saleType: [
-                        {
-                            value: '卖',
-                            label: '卖',
-                        },
-                        {
-                            value: '买',
-                            label: '买',
-                        },
-                    ],
                     roleName: '',
                     operateNumber: '',
                     tableData: [
