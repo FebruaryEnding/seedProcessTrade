@@ -132,7 +132,7 @@
 
                 _ajax.GET(`/seed/affix`, {}, {
                     success: function (res) {
-                        this.nameList = res
+                        this.nameList = _pub.IsArray(_pub.GetObjProperty(res, 'data'))
                     }.bind(this)
                 })
             },
@@ -154,15 +154,15 @@
                             }.bind(this),
 
                             success: function (res) {
-                                _pub.Notify(this, { title: '单个添加', message: res })
+                                _pub.Notify(this, { title: '单个添加', message: _pub.GetObjProperty(res, 'msg') })
 
                                 _loacalStorage.set('baseInfo', { roleName: dataInfo.roleName, operateNumber: dataInfo.operateNumber })
 
                                 this.onDialogCancel()
 
                                 _list.render()
-                            }.bind(this)
-                        })
+                            }.bind(this),
+                        }, { notifyTitle: '单个添加' })
                     }
                 }.bind(this))
             },

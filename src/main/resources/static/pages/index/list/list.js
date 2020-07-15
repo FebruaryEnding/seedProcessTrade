@@ -125,7 +125,7 @@
 
                 _ajax.GET(`/seed`, searchInfo, {
                     success: function (res) {
-                        this.dataList = res.rows
+                        this.dataList = _pub.IsArray(_pub.GetObjProperty(res, 'rows'))
 
                         this.pagination.totalCount = res.totalCount
                     }.bind(this)

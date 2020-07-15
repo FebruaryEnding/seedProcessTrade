@@ -66,13 +66,13 @@
                             }.bind(this),
 
                             success: function (res) {
-                                _pub.Notify(this, { title: '删除', message: res })
+                                _pub.Notify(this, { title: '删除', message: _pub.GetObjProperty(res, 'msg') })
 
                                 this.onDialogCancel()
 
                                 _list.render()
                             }.bind(this)
-                        })
+                        }, { notifyTitle: '删除' })
                     }
                 }.bind(this))
             },

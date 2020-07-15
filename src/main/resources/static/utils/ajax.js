@@ -33,7 +33,15 @@
                 _pub.GetObjProperty(callback, 'complete') && callback.complete()
             },
             success: function (res) {
-                _pub.GetObjProperty(callback, 'success') && callback.success(res)
+                if (res.code === 200) {
+                    if (res.success) {
+                        _pub.GetObjProperty(callback, 'success') && callback.success(res)
+                    } else {
+                        _pub.Notify(this, { type: 'warning', title: params.notifyTitle, message: _pub.GetObjProperty(res, 'msg') })
+                    }
+                } else {
+                    _pub.GetObjProperty(callback, 'success') && callback.success(res)
+                }
             }.bind(this),
         })
     }

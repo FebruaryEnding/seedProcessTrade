@@ -662,7 +662,7 @@
                             }.bind(this),
                             success: function (res) {
 
-                                _pub.Notify(this, { title: '多选添加', message: res })
+                                _pub.Notify(this, { title: '批量添加', message: _pub.GetObjProperty(res, 'msg') })
 
                                 _loacalStorage.set('baseInfo', { roleName: this.model.roleName, operateNumber: this.model.operateNumber })
 
@@ -670,7 +670,7 @@
 
                                 _list.render()
                             }.bind(this)
-                        })
+                        }, { notifyTitle: '批量添加' })
                     }
                 }.bind(this));
             },
