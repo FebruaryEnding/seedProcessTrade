@@ -71,8 +71,12 @@
                                 this.onDialogCancel()
 
                                 _list.render()
+                            }.bind(this),
+
+                            warning: function (res) {
+                                _pub.Notify(this, { type: 'warning', title: '删除', message: _pub.GetObjProperty(res, 'msg') })
                             }.bind(this)
-                        }, { notifyTitle: '删除' })
+                        })
                     }
                 }.bind(this))
             },

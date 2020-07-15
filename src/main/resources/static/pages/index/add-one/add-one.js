@@ -162,7 +162,12 @@
 
                                 _list.render()
                             }.bind(this),
-                        }, { notifyTitle: '单个添加' })
+
+                            warning: function (res) {
+                                _pub.Notify(this, { type: 'warning', title: '单个添加', message: _pub.GetObjProperty(res, 'msg') })
+                            }.bind(this)
+
+                        })
                     }
                 }.bind(this))
             },

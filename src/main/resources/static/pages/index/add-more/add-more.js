@@ -669,8 +669,12 @@
                                 this.onDialogCancel()
 
                                 _list.render()
+                            }.bind(this),
+
+                            warning: function (res) {
+                                _pub.Notify(this, { type: 'warning', title: '批量添加', message: _pub.GetObjProperty(res, 'msg') })
                             }.bind(this)
-                        }, { notifyTitle: '批量添加' })
+                        })
                     }
                 }.bind(this));
             },

@@ -37,7 +37,7 @@
                     if (res.success) {
                         _pub.GetObjProperty(callback, 'success') && callback.success(res)
                     } else {
-                        _pub.Notify(this, { type: 'warning', title: params.notifyTitle, message: _pub.GetObjProperty(res, 'msg') })
+                        _pub.GetObjProperty(callback, 'warning') && callback.warning(res)
                     }
                 } else {
                     _pub.GetObjProperty(callback, 'success') && callback.success(res)
