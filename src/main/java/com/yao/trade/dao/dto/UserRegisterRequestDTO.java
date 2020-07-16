@@ -1,24 +1,6 @@
-package com.yao.trade.domain;
+package com.yao.trade.dao.dto;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "t_user")
-public class UserEntity {
-    @Id
-    @GeneratedValue(
-            generator = "system-uuid"
-    )
-    @GenericGenerator(
-            name = "system-uuid",
-            strategy = "uuid"
-    )
-    private String id;
+public class UserRegisterRequestDTO {
 
     private String serverName;
 
@@ -31,27 +13,6 @@ public class UserEntity {
     private String roleName;
 
     private Integer roleLevel;
-
-    /**
-     * 担保
-     */
-    private Integer vouch = 0;
-
-    public Integer getRoleLevel() {
-        return roleLevel;
-    }
-
-    public void setRoleLevel(Integer roleLevel) {
-        this.roleLevel = roleLevel;
-    }
-
-    public Integer getVouch() {
-        return vouch;
-    }
-
-    public void setVouch(Integer vouch) {
-        this.vouch = vouch;
-    }
 
     public String getServerName() {
         return serverName;
@@ -93,11 +54,11 @@ public class UserEntity {
         this.roleName = roleName;
     }
 
-    public String getId() {
-        return id;
+    public Integer getRoleLevel() {
+        return roleLevel;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRoleLevel(Integer roleLevel) {
+        this.roleLevel = roleLevel;
     }
 }

@@ -12,7 +12,7 @@ public class AllExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public Result RunTimeExceptionHandler(RuntimeException e){
-        Result build = new Result.Builder().msg(e.getMessage()).success(false).code(Code.INTERNAL_SERVER_ERROR.getCode()).build();
+        Result build = new Result.Builder().msg(e.getMessage()).success(false).code(Code.SUCCESS.getCode()).build();
         return build;
     }
 }
