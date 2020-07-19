@@ -1,0 +1,21 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #A3D0C3;
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.content-box {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-sizing: border-box;
+}

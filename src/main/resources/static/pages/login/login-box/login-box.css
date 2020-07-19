@@ -1,0 +1,15 @@
+.login-box {
+    width: 400px;
+}
+
+.title {
+    height: 40px;
+    font-size: 30px;
+    color: #333333;
+    text-align: center;
+    line-height: 40px;
+}
+
+.login-con {
+    margin-top: 20px;
+}

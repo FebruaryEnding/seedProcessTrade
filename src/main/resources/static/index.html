@@ -19,9 +19,15 @@
     <script src="./js/vue.min.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="./utils/public.js"></script>
-    <script src="./utils/ajax.js"></script>
     <script src="./utils/localStorage.js"></script>
+    <script src="./utils/ajax.js"></script>
     <script src="./utils/dataDic.js"></script>
+
+    <script>
+        (function () {
+            if (!_pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id')) window.location.href = './pages/login/index.html'
+        })()
+    </script>
 </head>
 
 <body>
