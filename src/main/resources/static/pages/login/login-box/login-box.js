@@ -53,6 +53,7 @@
                         _loacalStorage.set('userInfo', data)
 
                         this.resetData()
+
                     }.bind(this)
                 })
             },

@@ -45,7 +45,7 @@ public class UserController {
 
     @ApiOperation("登录")
     @PostMapping("/login")
-    public Result login(LoginRequestDto loginRequestDto){
+    public Result login(@RequestBody LoginRequestDto loginRequestDto){
         UserResponseDTO responseDTO = userDao.login(loginRequestDto);
         return new Result.Builder().data(responseDTO).msg("登录成功").success(true).build();
     }
