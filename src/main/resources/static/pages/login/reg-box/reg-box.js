@@ -137,7 +137,11 @@
                                 _pub.Notify(this, { title: '注册', message: _pub.GetObjProperty(res, 'msg') })
 
                                 this.gotoLogin()
-                            }.bind(this)
+                            }.bind(this),
+
+                            warning: function (res) {
+                                _pub.Notify(this, { type: 'warning', title: '注册', message: _pub.GetObjProperty(res, 'msg') })
+                            }.bind(this),
                         })
                     }
                 }.bind(this))

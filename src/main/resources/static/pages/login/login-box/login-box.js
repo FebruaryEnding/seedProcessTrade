@@ -54,7 +54,13 @@
 
                         this.resetData()
 
-                    }.bind(this)
+                        this.gotoHome()
+
+                    }.bind(this),
+
+                    warning: function (res) {
+                        _pub.Notify(this, { type: 'warning', title: '登录', message: _pub.GetObjProperty(res, 'msg') })
+                    }.bind(this),
                 })
             },
             resetData() {
