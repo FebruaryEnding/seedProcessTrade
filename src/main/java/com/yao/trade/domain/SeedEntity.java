@@ -23,6 +23,8 @@ public class SeedEntity {
     )
     private String id;
 
+    private String userId;
+
     private String ip;
 
     /**
@@ -82,6 +84,14 @@ public class SeedEntity {
     private Integer level;
 
     private Boolean mul;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Boolean getMul() {
         return mul;

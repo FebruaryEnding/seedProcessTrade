@@ -8,6 +8,8 @@ import java.util.Date;
 
 public class SeedRequestDTO {
 
+    private String userId;
+
     /**
      * 种子名字
      */
@@ -64,6 +66,14 @@ public class SeedRequestDTO {
      */
     @ApiModelProperty("服务器 （国际服/国服）二选一")
     private String  serverName;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Integer getLevel() {
         return level;
