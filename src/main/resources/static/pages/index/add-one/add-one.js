@@ -52,10 +52,6 @@
                         </el-input>
                     </el-form-item>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> loc-head
                 </el-form>
 
                 <span slot="footer" class="dialog-footer">
