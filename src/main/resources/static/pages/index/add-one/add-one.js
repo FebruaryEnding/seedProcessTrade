@@ -4,8 +4,8 @@
         vm.dialogVisible = true
 
         var baseInfo = _loacalStorage.get('baseInfo')
-        vm.model.dataInfo.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
-        vm.model.dataInfo.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
+        // vm.model.dataInfo.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
+        // vm.model.dataInfo.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
 
         // 获取种植工艺列表
         vm.getNameList()
@@ -62,10 +62,6 @@
                         </el-input>
                     </el-form-item>
 
-                    <el-form-item label="删除密钥" prop="operateNumber">
-                        <el-input style="width: 300px;" show-password v-model="model.dataInfo.operateNumber" placeholder="请输入删除密钥(删除操作需要)">
-                        </el-input>
-                    </el-form-item>
 
                 </el-form>
 
@@ -108,24 +104,23 @@
                             { required: true, message: '请输入价格', trigger: 'change' },
                             { pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, message: '格式不正确', trigger: 'change' }
                         ],
-                        operateNumber: [
-                            { required: true, message: '请输入删除密钥', trigger: 'change' }
-                        ],
+
                     },
                     dataInfo: {
                         name: '',
                         number: 1,
                         level: 83,
-                        roleName: '',
-                        serverName: '国际服',
+                        roleName: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'roleName'),
+                        serverName: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'serverName'),
                         sellOrBuy: '卖',
                         price: 1,
                         unit: 'c',
-                        operateNumber: '',
+                        userId:  _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id'),
                     },
                 },
             }
         },
+
         methods: {
             getNameList() {
                 if (this.nameList.length) return

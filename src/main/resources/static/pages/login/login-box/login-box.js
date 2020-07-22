@@ -75,7 +75,7 @@
                 _reg.show()
             },
             gotoHome() {
-                window.history.back()
+                window.location.href = '../../index.html'
             },
         },
     })

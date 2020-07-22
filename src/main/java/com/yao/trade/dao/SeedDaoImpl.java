@@ -41,9 +41,6 @@ public class SeedDaoImpl implements ISeedDao {
             throw new RuntimeException("请等10秒钟后再次添加");
         }
         for (SeedEntity seedEntity : list) {
-            if (StringUtils.isEmpty(seedEntity.getOperateNumber())) {
-                throw new RuntimeException("老哥填下删除密钥");
-            }
             seedEntity.setIp(realIpAddress);
             seedEntity.setCreatedTime(new Date());
         }
@@ -69,6 +66,9 @@ public class SeedDaoImpl implements ISeedDao {
         SeedEntity seedEntity = seedService.findById(id);
         if (seedEntity == null) {
             return "老哥，消息不存在啊";
+        }
+        if(seedEntity.getUserId() == null){
+            return "老数据请进群联系管理员删除";
         }
         if (!seedEntity.getUserId().equals(userId)) {
             return "老哥，只能删自己的消息，如果自己的消息删不掉请进群反馈";

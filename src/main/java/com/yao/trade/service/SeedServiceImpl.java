@@ -52,7 +52,7 @@ public class SeedServiceImpl implements ISeedService {
 
     @Override
     public SeedEntity findById(String id) {
-        return seedRepository.findById(id).get();
+        return seedRepository.findOne(id);
     }
 
     @Override

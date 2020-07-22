@@ -28,4 +28,7 @@ public interface SeedRepository extends JpaRepository<SeedEntity, String>, JpaSp
     @Query("delete  from SeedEntity  s where s.userId = ?1 and s.mul = true ")
     @Modifying
     void deleteByUserId(String userId);
+
+    @Query("select  s from SeedEntity s where s.id = ?1")
+    SeedEntity findOne(String id);
 }

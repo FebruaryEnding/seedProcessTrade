@@ -111,6 +111,7 @@
                 saleType: _dataDic.get('saleType'),
                 dataList: [],
                 nameList: [],
+                userId: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id'),
             }
         },
         mounted() {
@@ -146,8 +147,29 @@
 
                 this.getList()
             },
+            // onDel(row) {
+            //     _delDialog.show(row.id)
+            // },
+
             onDel(row) {
-                _delDialog.show(row.id)
+                let userId =  _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id')
+                _ajax.DELETE(`/seed/${row.id}/`+userId, {}, {
+                    complete: function () {
+                        this.dialogLoading = false
+                    }.bind(this),
+
+                    success: function (res) {
+                        _pub.Notify(this, { title: '删除', message: _pub.GetObjProperty(res, 'msg') })
+
+                        this.onDialogCancel()
+
+                        _list.render()
+                    }.bind(this),
+
+                    warning: function (res) {
+                        _pub.Notify(this, { type: 'warning', title: '删除', message: _pub.GetObjProperty(res, 'msg') })
+                    }.bind(this)
+                }).bind(this);
             },
             onMoreAdd() {
                 _addMore.show()
