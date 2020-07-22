@@ -73,7 +73,17 @@
                         <el-table-column fixed="right" label="操作" width="100">
                             <template slot-scope="scope">
                                 <el-button @click="onCopy(scope.row)" type="text" size="small">copy</el-button>
-                                <el-button @click="onDel(scope.row)" type="text" size="small">del</el-button>
+
+                                <el-popover
+                                placement="top"
+                                width="160"
+                                trigger="hover">
+                                <p>您确认删除该条数据吗？</p>
+                                <div style="text-align: right; margin: 0">
+                                    <el-button type="primary" size="mini" :loading="delLoading" @click="onDel(scope.row)">确定</el-button>
+                                </div>
+                                <el-button v-if="verDel(scope.row)" type="text" size="small" slot="reference">del</el-button>
+                                </el-popover>
                             </template>
                         </el-table-column>
 
@@ -111,6 +121,8 @@
                 saleType: _dataDic.get('saleType'),
                 dataList: [],
                 nameList: [],
+                userInfo: _loacalStorage.get('userInfo'),
+                delLoading: false,
             }
         },
         mounted() {
@@ -131,6 +143,9 @@
                     }.bind(this)
                 })
             },
+            verDel(row) {
+                return _pub.GetObjProperty(row, 'roleName') === _pub.GetObjProperty(this.userInfo, 'roleName')
+            },
             onHandleSizeChange(val) {
                 this.pagination.pageSize = val
 
@@ -147,7 +162,25 @@
                 this.getList()
             },
             onDel(row) {
-                if (_pub.IsLogin()) _delDialog.show(row.id)
+                if (_pub.IsLogin()) {
+                    this.delLoading = true
+
+                    _ajax.DELETE(`/seed/${_pub.GetObjProperty(row, 'id')}/${_pub.GetObjProperty(this.userInfo, 'id')}`, {}, {
+                        complete: function () {
+                            this.delLoading = false
+                        }.bind(this),
+
+                        success: function (res) {
+                            _pub.Notify(this, { title: '删除', message: _pub.GetObjProperty(res, 'msg') })
+
+                            this.onSearch()
+                        }.bind(this),
+
+                        warning: function (res) {
+                            _pub.Notify(this, { type: 'warning', title: '删除', message: _pub.GetObjProperty(res, 'msg') })
+                        }.bind(this)
+                    })
+                }
             },
             onMoreAdd() {
                 if (_pub.IsLogin()) _addMore.show()
