@@ -64,4 +64,9 @@ public class SeedServiceImpl implements ISeedService {
     public void deleteMulByRoleNameAndOperateNumber(String roleName, String operateNumber) {
         seedRepository.deleteMulByRoleNameAndOperateNumber(roleName,operateNumber);
     }
+
+    @Override
+    public void deleteByUserId(String userId) {
+        seedRepository.deleteByUserId(userId);
+    }
 }

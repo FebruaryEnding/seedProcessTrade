@@ -52,9 +52,6 @@ public class SeedDaoImpl implements ISeedDao {
 
     @Override
     public void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest) {
-        if (StringUtils.isEmpty(seedRequestDTO.getOperateNumber())) {
-            throw new RuntimeException("老哥填下删除密钥");
-        }
         SeedEntity seedEntity = BeanCopyUtils.copy(seedRequestDTO, SeedEntity.class);
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
         List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
@@ -68,12 +65,12 @@ public class SeedDaoImpl implements ISeedDao {
 
     @Override
     @Transactional
-    public String delete(String id, String operateNumber, HttpServletRequest servletRequest) {
+    public String delete(String id, String userId, HttpServletRequest servletRequest) {
         SeedEntity seedEntity = seedService.findById(id);
         if (seedEntity == null) {
             return "老哥，消息不存在啊";
         }
-        if (!seedEntity.getOperateNumber().equals(operateNumber)) {
+        if (!seedEntity.getUserId().equals(userId)) {
             return "老哥，只能删自己的消息，如果自己的消息删不掉请进群反馈";
         }
         seedService.deleteById(id);
@@ -85,23 +82,22 @@ public class SeedDaoImpl implements ISeedDao {
     public void mulAdd(SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest) {
         List<SeedEntity> list = new ArrayList<>();
         String realIpAddress = IpUtils.getRealIpAddress(servletRequest);
-        if (StringUtils.isEmpty(seedRequestDTO.getOperateNumber()) || StringUtils.isEmpty(seedRequestDTO.getRoleName())) {
-            throw new RuntimeException("请填写删除密钥和角色名称");
+        if ( StringUtils.isEmpty(seedRequestDTO.getRoleName())) {
+            throw new RuntimeException("请填写角色名称");
         }
-        seedService.deleteMulByRoleNameAndOperateNumber(seedRequestDTO.getRoleName(), seedRequestDTO.getOperateNumber());
-        List<SeedEntity> seedEntities = seedService.findByIp(realIpAddress);
+        seedService.deleteByUserId(seedRequestDTO.getUserId());
         List<SeedMulAddItemRequestDto> add = seedRequestDTO.getAdd();
-        list.addAll(this.toAdd(seedRequestDTO.getUserId(),add, "加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(seedRequestDTO.getUserId(),add, "加", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> addLuck = seedRequestDTO.getAddLuck();
-        list.addAll(this.toAdd(seedRequestDTO.getUserId(),addLuck, "幸运加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(seedRequestDTO.getUserId(),addLuck, "幸运加", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> removeAndAdd = seedRequestDTO.getRemoveAndAdd();
-        list.addAll(this.toAdd(seedRequestDTO.getUserId(),removeAndAdd, "去加", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(seedRequestDTO.getUserId(),removeAndAdd, "去加", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> remove = seedRequestDTO.getRemove();
-        list.addAll(this.toAdd(seedRequestDTO.getUserId(),remove, "去", realIpAddress, seedRequestDTO.getOperateNumber(), seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
+        list.addAll(this.toAdd(seedRequestDTO.getUserId(),remove, "去", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         seedService.save(list);
     }
 
-    private List<SeedEntity> toAdd(String userId,List<SeedMulAddItemRequestDto> requestDto, String name, String realIpAddress, String operateNumber, String roleName,
+    private List<SeedEntity> toAdd(String userId,List<SeedMulAddItemRequestDto> requestDto, String name, String realIpAddress, String roleName,
                                    String sellOrBuy, String serverName) {
         List<SeedEntity> seeEntities = new ArrayList<>();
         if (!CollectionUtils.isEmpty(requestDto)) {
@@ -111,7 +107,6 @@ public class SeedDaoImpl implements ISeedDao {
                     seedEntity.setCreatedTime(new Date());
                     seedEntity.setIp(realIpAddress);
                     seedEntity.setName(name + seedMulAddItemRequestDto.getName());
-                    seedEntity.setOperateNumber(operateNumber);
                     seedEntity.setUserId(userId);
                     seedEntity.setRoleName(roleName);
                     seedEntity.setSellOrBuy("卖");

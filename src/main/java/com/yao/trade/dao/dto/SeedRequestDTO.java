@@ -55,13 +55,6 @@ public class SeedRequestDTO {
 
 
     /**
-     * 操作码
-     */
-    @ApiModelProperty("操作码")
-    private String operateNumber;
-
-
-    /**
      * 是不是腾讯服
      */
     @ApiModelProperty("服务器 （国际服/国服）二选一")
@@ -147,11 +140,4 @@ public class SeedRequestDTO {
         this.remark = remark;
     }
 
-    public String getOperateNumber() {
-        return operateNumber;
-    }
-
-    public void setOperateNumber(String operateNumber) {
-        this.operateNumber = operateNumber;
-    }
 }

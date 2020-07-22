@@ -16,7 +16,7 @@ public interface ISeedDao {
 
     void saveOne(SeedRequestDTO seedRequestDTO, HttpServletRequest servletRequest);
 
-    String delete(String id, String operateNumber, HttpServletRequest servletRequest);
+    String delete(String id, String userId, HttpServletRequest servletRequest);
 
     void mulAdd(SeedMulAddRequestDto seedRequestDTO, HttpServletRequest servletRequest);
 }

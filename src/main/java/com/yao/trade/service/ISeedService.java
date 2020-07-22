@@ -26,4 +26,6 @@ public interface ISeedService {
     void deleteById(String id);
 
     void deleteMulByRoleNameAndOperateNumber(String roleName, String operateNumber);
+
+    void deleteByUserId(String userId);
 }

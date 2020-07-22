@@ -16,7 +16,7 @@ public class SeedMulAddRequestDto {
 
     private String sellOrBuy;
 
-    private String operateNumber;
+
 
     private String serverName;
 
@@ -86,11 +86,5 @@ public class SeedMulAddRequestDto {
         this.roleName = roleName;
     }
 
-    public String getOperateNumber() {
-        return operateNumber;
-    }
 
-    public void setOperateNumber(String operateNumber) {
-        this.operateNumber = operateNumber;
-    }
 }
