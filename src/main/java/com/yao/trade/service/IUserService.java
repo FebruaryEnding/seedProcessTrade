@@ -9,4 +9,6 @@ public interface IUserService {
     UserEntity findOne(String id);
 
     UserEntity findByUserNameAndPassword(String userName, String password);
+
+    UserEntity findByUserName(String userName);
 }

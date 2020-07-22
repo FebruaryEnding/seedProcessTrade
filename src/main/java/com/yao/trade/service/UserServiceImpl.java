@@ -25,4 +25,9 @@ public class UserServiceImpl implements IUserService {
     public UserEntity findByUserNameAndPassword(String userName, String password) {
         return repository.findByUserNameAndPassword(userName,password);
     }
+
+    @Override
+    public UserEntity findByUserName(String userName) {
+        return repository.findByUserName(userName);
+    }
 }

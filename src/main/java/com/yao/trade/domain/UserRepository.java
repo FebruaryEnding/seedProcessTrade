@@ -9,4 +9,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String>, JpaSp
 
     @Query("select u from UserEntity  u where u.userName = ?1 and u.password = ?2")
     UserEntity findByUserNameAndPassword(String userName, String password);
+
+
+    @Query("select u from UserEntity  u where u.userName = ?1")
+    UserEntity findByUserName(String userName);
 }

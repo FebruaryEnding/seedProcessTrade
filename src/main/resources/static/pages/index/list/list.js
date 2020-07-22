@@ -155,15 +155,15 @@
                 let userId =  _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id')
                 _ajax.DELETE(`/seed/${row.id}/`+userId, {}, {
                     complete: function () {
-                        this.dialogLoading = false
+
                     }.bind(this),
 
                     success: function (res) {
                         _pub.Notify(this, { title: '删除', message: _pub.GetObjProperty(res, 'msg') })
 
-                        this.onDialogCancel()
 
-                        _list.render()
+                        this.getList();
+
                     }.bind(this),
 
                     warning: function (res) {

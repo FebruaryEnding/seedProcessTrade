@@ -69,6 +69,11 @@ public class UserDaoImpl implements IUserDao {
 
     @Override
     public void register(UserRegisterRequestDTO registerRequestDTO) {
+
+        UserEntity entity = userService.findByUserName(registerRequestDTO.getUserName());
+        if (entity != null) {
+            throw new RuntimeException("用户名已经被注册请换一个");
+        }
         UserEntity userEntity = BeanCopyUtils.copy(registerRequestDTO, UserEntity.class);
         userService.save(userEntity);
     }
@@ -91,7 +96,7 @@ public class UserDaoImpl implements IUserDao {
     @Override
     public void changeRole(ChangeRoleRequestDTO changeRoleRequestDTO) {
         UserEntity userEntity = userService.findOne(changeRoleRequestDTO.getUserId());
-        if(userEntity == null){
+        if (userEntity == null) {
             throw new RuntimeException("用户不存在");
         }
         userEntity.setRoleLevel(changeRoleRequestDTO.getRoleLevel());
