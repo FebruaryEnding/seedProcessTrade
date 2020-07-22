@@ -24,7 +24,7 @@
                 </el-form-item>
 
                 <el-form-item label="角色信息" prop="roleInfo">
-                <el-select style="width: 310px;" placeholder="输入游戏账号和服务器查询角色信息" v-model="model.dataInfo.roleInfo">
+                <el-select style="width: 310px;" placeholder="输入游戏账号和服务器查询角色信息" :no-data-text="roleLoadingText" v-model="model.dataInfo.roleInfo">
                             <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -56,6 +56,7 @@
             return {
                 visible: false,
                 loading: false,
+                roleLoadingText: '无数据',
                 serverType: _dataDic.get('serverType'),
                 roleList: [],
                 model: {
@@ -96,10 +97,16 @@
                 dataInfo.roleInfo = ''
 
                 if (dataInfo.accountNumber && dataInfo.serverName) {
+                    this.roleLoadingText = '正在查询角色信息...'
+
                     _ajax.GET(`/user`, {
                         accountNumber: dataInfo.accountNumber,
                         serverName: dataInfo.serverName,
                     }, {
+                        complete: function () {
+                            this.roleLoadingText = '无数据'
+                        }.bind(this),
+
                         success: function (res) {
                             var data = _pub.IsArray(_pub.GetObjProperty(res, 'data'))
 

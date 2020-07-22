@@ -3,9 +3,10 @@
     owner.show = function () {
         vm.dialogVisible = true
 
-        var baseInfo = _loacalStorage.get('baseInfo')
-        // vm.model.dataInfo.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
-        // vm.model.dataInfo.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
+        var userInfo = _loacalStorage.get('userInfo')
+        vm.model.dataInfo.roleName = _pub.GetObjProperty(userInfo, 'roleName')
+        vm.model.dataInfo.userId = _pub.GetObjProperty(userInfo, 'id')
+        vm.model.dataInfo.serverName = _pub.GetObjProperty(userInfo, 'serverName')
 
         // 获取种植工艺列表
         vm.getNameList()
@@ -27,17 +28,6 @@
 
                     <el-form-item label="等级" prop="level">
                         <el-input-number style="width: 300px;" v-model="model.dataInfo.level" :precision="0"></el-input-number>
-                    </el-form-item>
-
-                    <el-form-item label="角色名" prop="roleName">
-                        <el-input style="width: 300px;" v-model="model.dataInfo.roleName" placeholder="请输入角色名"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="服务器" prop="serverName">
-                        <el-select style="width: 300px;" v-model="model.dataInfo.serverName">
-                            <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
-                            </el-option>
-                        </el-select>
                     </el-form-item>
 
                     <el-form-item label="买卖" prop="sellOrBuy">
@@ -62,7 +52,10 @@
                         </el-input>
                     </el-form-item>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> loc-head
                 </el-form>
 
                 <span slot="footer" class="dialog-footer">
@@ -93,9 +86,6 @@
                             { required: true, message: '请输入等级', trigger: 'change' },
                             { pattern: /(^[1-9]\d*$)/, message: '请输入正整数', trigger: 'change' }
                         ],
-                        roleName: [
-                            { required: true, message: '请输入角色名', trigger: 'change' }
-                        ],
                         number: [
                             { required: true, message: '请输入数量', trigger: 'change' },
                             { pattern: /(^[1-9]\d*$)/, message: '0或正整数', trigger: 'change' }
@@ -104,18 +94,17 @@
                             { required: true, message: '请输入价格', trigger: 'change' },
                             { pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, message: '格式不正确', trigger: 'change' }
                         ],
-
                     },
                     dataInfo: {
                         name: '',
                         number: 1,
-                        level: 83,
-                        roleName: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'roleName'),
-                        serverName: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'serverName'),
+                        level: 90,
+                        roleName: '',
+                        serverName: '',
                         sellOrBuy: '卖',
                         price: 1,
                         unit: 'c',
-                        userId:  _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id'),
+                        userId: '',
                     },
                 },
             }
@@ -150,8 +139,6 @@
 
                             success: function (res) {
                                 _pub.Notify(this, { title: '单个添加', message: _pub.GetObjProperty(res, 'msg') })
-
-                                _loacalStorage.set('baseInfo', { roleName: dataInfo.roleName, operateNumber: dataInfo.operateNumber })
 
                                 this.onDialogCancel()
 

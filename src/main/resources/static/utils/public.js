@@ -24,7 +24,9 @@
         });
     }
 
-    onwer.Copy = function (value) {
+    onwer.Copy = function (_this, value) {
+        this.Notify(_this, { title: '复制', message: '您复制了一条种植工艺密钥！' })
+
         var oInput = document.createElement('input')
         oInput.setAttribute('id', 'copy')
         oInput.value = value
@@ -35,5 +37,18 @@
         document.getElementById('copy').remove()
     }
 
+    onwer.IsLogin = function () {
+        var isLogin = !!this.GetObjProperty(_loacalStorage.get('userInfo'), 'id')
+
+        if (!isLogin) this.GotoLogin()
+
+        return isLogin
+    }
+
+    onwer.GotoLogin = function () {
+        _loacalStorage.remove('userInfo')
+
+        window.location.href = 'pages/login/index.html'
+    }
 
 })(window._pub = {})

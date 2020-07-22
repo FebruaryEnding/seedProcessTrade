@@ -3,9 +3,10 @@
     owner.show = function () {
         vm.dialogVisible = true
 
-        var baseInfo = _loacalStorage.get('baseInfo')
-        // vm.model.roleName = _pub.GetObjProperty(baseInfo, 'roleName')
-        // vm.model.operateNumber = _pub.GetObjProperty(baseInfo, 'operateNumber')
+        var userInfo = _loacalStorage.get('userInfo')
+        vm.model.roleName = _pub.GetObjProperty(userInfo, 'roleName')
+        vm.model.serverName = _pub.GetObjProperty(userInfo, 'serverName')
+        vm.model.userId = _pub.GetObjProperty(userInfo, 'id')
     }
 
     var template =
@@ -16,23 +17,13 @@
                 <!-- 添加 -->
                 <el-form class="addMore-form" :model="model" :rules="model.rules" :inline="true" ref="addMore" label-width="100px">
 
-                    <el-form-item label="角色名" prop="roleName">
-                        <el-input style="width: 300px;" v-model="model.roleName" placeholder="请输入角色名"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="买卖" prop="sellOrBuy">
+                    <el-form-item label="买　　卖" prop="sellOrBuy">
                         <el-select style="width: 150px;" v-model="model.sellOrBuy">
                             <el-option v-for="item in saleType" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="服务器" prop="serverName">
-                        <el-select style="width: 150px;" v-model="model.serverName">
-                            <el-option v-for="item in serverType" :key="item.value" :label="item.label" :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-table
                         :data="model.tableData"
                         style="width: 100%;margin-top: 30px;"
@@ -322,10 +313,6 @@
                 unitType: _dataDic.get('unitType'),
                 model: {
                     rules: {
-                        roleName: [
-                            { required: true, message: '请输入角色名', trigger: 'change' }
-                        ],
-
                         number: [
                             { required: true, message: '', trigger: 'change' },
                             { pattern: /^(0|\+?[1-9][0-9]*)$/, message: '', trigger: 'change' }
@@ -335,10 +322,10 @@
                             { pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, message: '', trigger: 'change' }
                         ],
                     },
-                    serverName: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'serverName'),
+                    serverName: '',
                     sellOrBuy: '卖',
-                    roleName: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'roleName'),
-                    userId: _pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id'),
+                    roleName: '',
+                    userId: '',
                     tableData: [
                         {
                             type: '去',
@@ -630,9 +617,9 @@
                     if (valid) {
                         var subData = {
                             roleName: this.model.roleName,
-                            userId : this.model.userId,
                             serverName: this.model.serverName,
-                            sellOrBuy: this.model.sellOrBuy
+                            sellOrBuy: this.model.sellOrBuy,
+                            userId: this.model.userId
                         }
 
                         this.model.tableData.forEach(function (item) {
@@ -656,8 +643,6 @@
                             success: function (res) {
 
                                 _pub.Notify(this, { title: '批量添加', message: _pub.GetObjProperty(res, 'msg') })
-
-                                _loacalStorage.set('baseInfo', { roleName: this.model.roleName })
 
                                 this.onDialogCancel()
 
