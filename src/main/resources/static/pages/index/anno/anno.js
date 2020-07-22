@@ -2,8 +2,8 @@
 
     var template =
         `
-            <div class="anno-box">
-                <el-alert v-if="anno" :closable="false" :title="anno" type="warning" show-icon>
+            <div class="anno-box" v-if="anno">
+                <el-alert :closable="false" :title="anno" type="warning" show-icon>
                 </el-alert>
             </div>
         `

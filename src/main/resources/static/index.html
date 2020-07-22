@@ -11,11 +11,11 @@
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="./pages/index/index.css">
+    <link rel="stylesheet" href="./pages/index/header/header.css">
     <link rel="stylesheet" href="./pages/index/list/list.css">
     <link rel="stylesheet" href="./pages/index/add-more/add-more.css">
 
     <!-- 引入组件库 -->
-
     <script src="http://luopq.com/demo/lib/jquery-1.10.2.min.js"></script>
     <script src="./js/vue.min.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -23,16 +23,13 @@
     <script src="./utils/localStorage.js"></script>
     <script src="./utils/ajax.js"></script>
     <script src="./utils/dataDic.js"></script>
-
-    <script>
-        (function () {
-            if (!_pub.GetObjProperty(_loacalStorage.get('userInfo'), 'id')) window.location.href = './pages/login/index.html'
-        })()
-    </script>
 </head>
 
 <body>
     <div class="wrapper">
+        <!-- header -->
+        <div class="header"></div>
+
         <div class="content">
             <!-- 提示信息 -->
             <div class="anno-box"></div>
@@ -58,6 +55,7 @@
         </p>
     </footer>
 
+    <script src="./pages/index/header/header.js"></script>
     <script src="./pages/index/anno/anno.js"></script>
     <script src="./pages/index/list/list.js"></script>
     <script src="./pages/index/del-dialog/del-dialog.js"></script>

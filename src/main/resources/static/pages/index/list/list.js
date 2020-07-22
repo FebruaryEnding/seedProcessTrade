@@ -147,19 +147,16 @@
                 this.getList()
             },
             onDel(row) {
-                _delDialog.show(row.id)
+                if (_pub.IsLogin()) _delDialog.show(row.id)
             },
             onMoreAdd() {
-                _addMore.show()
+                if (_pub.IsLogin()) _addMore.show()
             },
             onOneAdd() {
-                _addOne.show()
+                if (_pub.IsLogin()) _addOne.show()
             },
             onCopy(row) {
-
-                _pub.Notify(this, { title: '复制', message: '您复制了一条种植工艺密钥！' })
-
-                _pub.Copy(_pub.GetObjProperty(row, "whisper"))
+                if (_pub.IsLogin()) _pub.Copy(this, _pub.GetObjProperty(row, "whisper"))
             },
         },
     })
