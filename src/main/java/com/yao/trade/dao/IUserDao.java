@@ -14,4 +14,6 @@ public interface IUserDao {
 
     UserResponseDTO login(LoginRequestDto loginRequestDto);
 
+    void changeRole(ChangeRoleRequestDTO changeRoleRequestDTO);
+
 }

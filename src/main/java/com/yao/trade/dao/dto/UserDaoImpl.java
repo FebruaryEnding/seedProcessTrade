@@ -88,5 +88,18 @@ public class UserDaoImpl implements IUserDao {
         return BeanCopyUtils.copy(userEntity, UserResponseDTO.class);
     }
 
+    @Override
+    public void changeRole(ChangeRoleRequestDTO changeRoleRequestDTO) {
+        UserEntity userEntity = userService.findOne(changeRoleRequestDTO.getUserId());
+        if(userEntity == null){
+            throw new RuntimeException("用户不存在");
+        }
+        userEntity.setRoleLevel(changeRoleRequestDTO.getRoleLevel());
+        userEntity.setRoleName(changeRoleRequestDTO.getRoleName());
+        userEntity.setAccountNumber(changeRoleRequestDTO.getAccountNumber());
+        userEntity.setServerName(changeRoleRequestDTO.getServerName());
+        userService.save(userEntity);
+    }
+
 
 }

@@ -43,6 +43,14 @@ public class UserController {
         return new Result.Builder().data(responseDTO).msg("查询成功").success(true).build();
     }
 
+
+    @ApiOperation("切换角色")
+    @PostMapping("changeRole")
+    public Result changeRole(@RequestBody  ChangeRoleRequestDTO changeRoleRequestDTO){
+        userDao.changeRole(changeRoleRequestDTO);
+        return new Result.Builder().data("").msg("注册成功").success(true).build();
+    }
+
     @ApiOperation("登录")
     @PostMapping("/login")
     public Result login(@RequestBody LoginRequestDto loginRequestDto){
