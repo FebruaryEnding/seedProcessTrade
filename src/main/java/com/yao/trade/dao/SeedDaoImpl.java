@@ -94,6 +94,8 @@ public class SeedDaoImpl implements ISeedDao {
         list.addAll(this.toAdd(seedRequestDTO.getUserId(),removeAndAdd, "去加", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         List<SeedMulAddItemRequestDto> remove = seedRequestDTO.getRemove();
         list.addAll(this.toAdd(seedRequestDTO.getUserId(),remove, "去", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
+        List<SeedMulAddItemRequestDto> notAndAdd = seedRequestDTO.getNotAndAdd();
+        list.addAll(this.toAdd(seedRequestDTO.getUserId(),notAndAdd, "非加", realIpAddress,  seedRequestDTO.getRoleName(), seedRequestDTO.getSellOrBuy(), seedRequestDTO.getServerName()));
         seedService.save(list);
     }
 
@@ -145,6 +147,8 @@ public class SeedDaoImpl implements ISeedDao {
                 if (!StringUtils.isEmpty(sellOrBuy)) {
                     predicates.add(criteriaBuilder.equal(root.get("sellOrBuy"), sellOrBuy));
                 }
+                Date date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdTime"),date));
                 return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
             }
         }, PageRequest.of(pageQuery.getPage(), pageQuery.getPageSize(), Sort.by(new Sort.Order(Sort.Direction.DESC, "createdTime"))));

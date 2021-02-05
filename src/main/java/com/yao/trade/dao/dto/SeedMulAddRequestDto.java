@@ -12,11 +12,11 @@ public class SeedMulAddRequestDto {
 
     private List<SeedMulAddItemRequestDto> remove;
 
+    private List<SeedMulAddItemRequestDto> notAndAdd;
+
     private String roleName;
 
     private String sellOrBuy;
-
-
 
     private String serverName;
 
@@ -24,6 +24,14 @@ public class SeedMulAddRequestDto {
 
     public String getUserId() {
         return userId;
+    }
+
+    public List<SeedMulAddItemRequestDto> getNotAndAdd() {
+        return notAndAdd;
+    }
+
+    public void setNotAndAdd(List<SeedMulAddItemRequestDto> notAndAdd) {
+        this.notAndAdd = notAndAdd;
     }
 
     public void setUserId(String userId) {

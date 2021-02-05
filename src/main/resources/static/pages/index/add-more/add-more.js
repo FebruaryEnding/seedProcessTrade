@@ -606,6 +606,75 @@
                                 price: 35,
                                 unit: 'c',
                             },
+                        },{
+                            type: '非加',
+                            typeKey: 'notAndAdd',
+                            bing: {
+                                name: "冰",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            huo: {
+                                name: "火",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            dian: {
+                                name: "电",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            hundun: {
+                                name: "混沌",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            wuli: {
+                                name: "物理",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            gongji: {
+                                name: "攻击",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            fangyu: {
+                                name: "防御",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            fashu: {
+                                name: "法术",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            sudu: {
+                                name: "速度",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            baoji: {
+                                name: "暴击",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
+                            slcz: {
+                                name: "势力词缀",
+                                number: 0,
+                                price: 35,
+                                unit: 'c',
+                            },
                         }
                     ]
                 },
